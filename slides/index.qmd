@@ -47,3 +47,14 @@ bibliography: references.bib
 
 - [**Conséquence**]{.blue2} : un ensemble de [**règles informelles**]{.orange},
 conventionnellement acceptées comme produisant des logiciels [**fiables**]{.orange}, [**évolutifs**]{.orange} et [**maintenables**]{.orange}
+
+---
+# Un graphique
+
+```{r, engine = 'tikz'}
+\begin{tikzpicture}
+ \draw (0,0) circle (1cm);
+ \draw (0,0) circle (2cm);
+\end{tikzpicture}
+```
+
