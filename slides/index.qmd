@@ -1,0 +1,49 @@
+---
+title: Olivier est un clown
+subtitle: |
+  **[Une formation pour le découvrir]{.orange}**
+author: |
+  [Olivier Meslin](https://github.com/oliviermeslin)
+# date: 
+slide-number: true
+footer: |
+  Olivier va-t-il s'en rendre compte ?
+# uncomment for French presentations:
+#lang: fr-FR
+# for blind readers:
+slide-tone: false
+# for @olevitt:
+chalkboard: # press the B key to toggle chalkboard
+  theme: whiteboard
+# uncomment to use the multiplex mode:
+#multiplex: true
+format:
+  # pick the light mode (onyxia-revealjs) or the dark mode (onyxia-dark-revealjs)
+  onyxia-revealjs:
+  #onyxia-dark-revealjs:
+    output-file: index.html
+controls: true
+css: custom.css
+from: markdown+emoji
+bibliography: references.bib
+---
+
+
+
+
+# Introduction
+
+## La notion de bonnes pratiques
+
+- [**Origine**]{.blue2} : communauté des développeurs logiciels
+
+::: {.incremental}
+- [**Constats**]{.blue2} :
+    - le [_"code est plus souvent lu qu'écrit"_]{.green2} ([Guido Van Rossum](https://fr.wikipedia.org/wiki/Guido_van_Rossum))
+    - la maintenance d'un code est très coûteuse
+:::
+
+. . .
+
+- [**Conséquence**]{.blue2} : un ensemble de [**règles informelles**]{.orange},
+conventionnellement acceptées comme produisant des logiciels [**fiables**]{.orange}, [**évolutifs**]{.orange} et [**maintenables**]{.orange}
