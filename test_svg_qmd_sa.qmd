@@ -1,10 +1,10 @@
 ---
 format:
   pdf:
-    documentclass: standalone
+    keep-tex: true
+    documentclass: article
     classoption:
-    - tikz=true
-    - crop=true
+      - tikz=true
 ---
 
 
@@ -12,15 +12,401 @@ format:
 1 + 1
 ```
 
-```{tikz empty-dag, echo=FALSE, fig.align="center"}
-\usetikzlibrary{positioning}
-\begin{tikzpicture}[every node/.append style={draw, minimum size=0.5cm}]
-\node [circle] (X) at (0,0) {aaaa};
-\node [circle] (Y) at (2,0) {bbbb};
-\node [rectangle] (Z) at (1,1) {};
-\path [-latex] (X) edge (Y);
-\draw [-latex] (Z) edge (Y);
-\draw [-latex] (Z) edge (X);
-\end{tikzpicture}
+```{tikz rf, echo=FALSE, fig.align="center"}
+\tikzset{
+    s2/.style={rectangle split,rectangle split horizontal,
+        rectangle split parts=2,draw},
+    sd/.style={append after command={%
+        (\tikzlastnode.#1 south|-\tikzlastnode.center)
+        coordinate[circle,inner sep=1pt,fill,alias=\tikzlastnode-cheat]}
+    },
+    s2l/.style={s2,sd=two},
+    s2r/.style={s2,sd=one},
+    c/.style={circle,draw,fill=gray,minimum size=1em},
+    fit margins/.style={
+        /tikz/afit/.cd,#1,
+        /tikz/.cd,
+        inner xsep=\pgfkeysvalueof{/tikz/afit/left}+\pgfkeysvalueof{/tikz/afit/right},
+        inner ysep=\pgfkeysvalueof{/tikz/afit/top}+\pgfkeysvalueof{/tikz/afit/bottom},
+        xshift=-\pgfkeysvalueof{/tikz/afit/left}+\pgfkeysvalueof{/tikz/afit/right},
+        yshift=-\pgfkeysvalueof{/tikz/afit/bottom}+\pgfkeysvalueof{/tikz/afit/top}
+    },
+    afit/.cd,left/.initial=4pt,right/.initial=4pt,bottom/.initial=4pt,top/.initial=1em}
+\tikzset{
+%  font=\Large\sffamily\bfseries,
+  red arrow/.style={
+    midway,red,sloped,fill, minimum height=3cm, single arrow, single arrow head extend=.5cm, single arrow head indent=.25cm,xscale=0.3,yscale=0.15,
+    allow upside down
+  },
+  tree box/.style={draw, rounded corners, inner sep=1em},
+  node box/.style={white, draw=black, text=black, rectangle, rounded corners},
+}
+\usetikzlibrary{
+    positioning,
+    decorations.pathreplacing,
+    arrows, arrows.meta,
+    shapes,
+    shapes.symbols,
+    shapes.multipart,
+    automata,
+    calc,
+    fit,
+    backgrounds,
+}
+    \begin{tikzpicture}[
+        level 1/.style = {sibling distance = 1.1cm}, 
+        level 2/.style = {sibling distance = 0.55cm},
+        % level 3/.style = {sibling distance = 3cm},
+        % level 4/.style = {sibling distance = 3cm},
+        % level 5/.style = {sibling distance = 1.5cm},
+    ]
+    \node[circle, fill = red!30, inner sep = 1.5mm, draw = black] (a1) {}    % root node (0th level)
+        child { 
+            node[circle, fill = green!30, inner sep = 1.5mm, draw = black] {}
+            child { 
+                node[circle, fill = blue!30, inner sep = 1.5mm, draw = black] (a2) {}
+            }
+            child { 
+                node[circle, fill = blue!30, inner sep = 1.5mm, draw = black] {}
+            } 
+        }
+        child { 
+            node[circle, fill = green!30, inner sep = 1.5mm, draw = black] (a3) {}
+        }
+    ;
+    \node[right = 3cm of a1, circle, fill = red!30, inner sep = 1.5mm, draw = black] (b1) {}    % root node (0th level)
+        child { 
+            node[circle, fill = green!30, inner sep = 1.5mm, draw = black] {}
+            child { 
+                node[circle, fill = blue!30, inner sep = 1.5mm, draw = black] (b2) {}
+        }
+            child { 
+                node[circle, fill = blue!30, inner sep = 1.5mm, draw = black] {}
+            } 
+        }
+        child { 
+            node[circle, fill = green!30, inner sep = 1.5mm, draw = black] (b4) {}
+            child { 
+                node[circle, fill = blue!30, inner sep = 1.5mm, draw = black] {}
+        }
+            child { 
+                node[circle, fill = blue!30, inner sep = 1.5mm, draw = black] (b3) {}
+            } 
+        }
+    
+    ;
+    \node[right = 4cm of b1, circle, fill = red!30, inner sep = 1.5mm, draw = black] (c1) {}    % root node (0th level)
+        child { 
+            node[circle, fill = green!30, inner sep = 1.5mm, draw = black] (c4) {}
+            child { 
+                node[circle, fill = blue!30, inner sep = 1.5mm, draw = black] (c2) {}
+            }
+            child { 
+                node[circle, fill = blue!30, inner sep = 1.5mm, draw = black] {}
+            } 
+        }
+        child { 
+            node[circle, fill = green!30, inner sep = 1.5mm, draw = black] (c3) {}
+        }
+    ;
+    \node[right =  4cm of c1, circle, fill = red!30, inner sep = 1.5mm, draw = black] (d1) {}    % root node (0th level)
+        child { 
+            node[circle, fill = green!30, inner sep = 1.5mm, draw = black] {}
+            child { 
+                node[circle, fill = blue!30, inner sep = 1.5mm, draw = black] (d2) {}
+            }
+            child { 
+                node[circle, fill = blue!30, inner sep = 1.5mm, draw = black] {}
+            } 
+        }
+        child { 
+            node[circle, fill = green!30, inner sep = 1.5mm, draw = black] (d3) {}
+        }
+    ;
+    % Faire les petits points
+    \path let \p1 = (b4), \p2 = (c4) in node[] at (\x1 / 2 + \x2 / 2 + 1mm, \y1) {\LARGE \bf $\dots$};
+    \path let \p1 = (c4) in node[] at (\x1 + 28mm, \y1) {\LARGE \bf $\dots$};
+    %
+    % % faire des boîtes autour des arbres
+    \node[node box, dashed, fit=(a1)(a2)(a3), fit margins={}](t1){};
+    \node[node box, dashed, fit=(b1)(b2)(b3), fit margins={}](t2){};
+    \node[node box, dashed, fit=(c1)(c2)(c3), fit margins={}](tk){};
+    \node[node box, dashed, fit=(d1)(d2)(d3), fit margins={}](tp){};
+    %
+    % Mettre des étiquetts aux arbres
+    \node[below right=0.5em, inner sep=0pt] at (t1.north west) {Tree 1};
+    \node[below right=0.5em, inner sep=0pt] at (t2.north west) {Tree 2};
+    \node[below right=0.5em, inner sep=0pt] at (tk.north west) {Tree $k$};
+    \node[below right=0.5em, inner sep=0pt] at (tp.north west) {Tree $p$};
+    %
+    % Mettre les formules sous les arbres
+    \node[below = 2em, node box] (formule_tree1) at (t1.south) {{$\displaystyle f_1\left(X, \hat{\theta}_1 \right)$}};
+    \path let \p1=(t2.south), \p2=(formule_tree1.west) in node[node box] (formule_tree2) at (\x1,\y2) {{$\displaystyle f_2\left(X, \hat{\theta}_2 \right)$}};
+    \path let \p1=(tk.south), \p2=(formule_tree1.west) in node[node box] (formule_treek) at (\x1,\y2) {{$\displaystyle f_k\left(X, \hat{\theta}_k \right)$}};
+    \path let \p1=(tp.south), \p2=(formule_tree1.west) in node[node box] (formule_treep) at (\x1,\y2) {{$\displaystyle f_p\left(X, \hat{\theta}_p \right)$}};
+    %
+    % Relier les arbres aux formules
+    \draw[-latex, thick] (t1.south) -- (formule_tree1.north);
+    \draw[-latex, thick] (t2.south) -- (formule_tree2.north);
+    \draw[-latex, thick] (tp.south) -- (formule_treep.north);
+    \draw[-latex, thick] let \p1=(formule_treek.north), \p2=(t1.south) in (\x1,\y2) -- (formule_treek.north);
+    \node[below = 1cm, node box] (prediction) at (current bounding box.south) {{$\displaystyle \hat{y}=\sum_{k=1}^{p} f_k\left(X, \hat{\theta}_k \right)$}};
+    %
+     % Relier les formules à la prédiction
+    \draw[-latex, thick] let \p1=(formule_tree1.south), \p2=(prediction.north) in (\x1, \y2+5mm) |- (\x2, \y2+5mm) -| (prediction.north);
+    \draw[-latex, thick] let \p1=(formule_treep.south), \p2=(prediction.north) in (\x1, \y2+5mm) |- (\x2, \y2+5mm) -| (prediction.north);
+    \draw let \p1=(formule_tree1.south), \p2=(prediction.north) in (formule_tree1.south) -- (\x1, \y2+5mm);
+    \draw let \p1=(formule_tree2.south), \p2=(prediction.north) in (formule_tree2.south) -- (\x1, \y2+5mm);
+    \draw let \p1=(formule_treek.south), \p2=(prediction.north) in (formule_treek.south) -- (\x1, \y2+5mm);
+    \draw let \p1=(formule_treep.south), \p2=(prediction.north) in (formule_treep.south) -- (\x1, \y2+5mm);
+     % Les flèches de résidus version 1
+    %\draw[-latex, thick, red] (formule_tree1.east) -- (t2.south west) node[midway,above,sloped] {Residual};
+    %\draw[-latex, thick, red] let \p1=(formule_tree1.east), \p2 = (t2.south west), \p3 = (formule_tree2.east) in (formule_tree2.east) -- (\x3+\x2-\x1, \y2) node[midway,above,sloped] {Residual};
+    %\draw[-latex, thick, red] let \p1=(formule_treep.west), \p2 = (formule_tree1.east), \p3 = (t2.south west) in (\x1-\x3+\x2, \y1) -- (tp.south west) node[midway,above,sloped] {Residual};
+    %
+    % Ajouter le dataset
+    \node[above, xshift =  1cm, yshift = 2.5cm, node box] (features) at (current bounding box.north) {Features $X$};
+    \node[left = 3mm of features, node box] (target) {Target $y$};
+    %
+    % Relier les données aux arbres (random forest)
+    % \node[node box, fit=(features)(target), inner sep = 2mm](dataset){};
+    % \node[below = 5mm of dataset, node box] (randomization) {Random subsample of rows and columns};
+    % \draw[-latex, thick] (dataset.south) -| (randomization.north);
+    % \draw let \p1=(t1.north), \p2=(randomization.south) in (\x1, \y2-5mm) |- (\x2, \y2-5mm) -| (randomization.south);
+    % \draw let \p1=(tp.north), \p2=(randomization.south) in (\x1, \y2-5mm) |- (\x2, \y2-5mm) -| (randomization.south);
+    % \draw[-latex, thick] let \p1=(t1.north), \p2=(randomization.south) in (\x1, \y2-5mm) -- (t1.north);
+    % \draw[-latex, thick] let \p1=(t2.north), \p2=(randomization.south) in (\x1, \y2-5mm) -- (t2.north);
+    % \draw[-latex, thick] let \p1=(tk.north), \p2=(randomization.south) in (\x1, \y2-5mm) -- (tk.north);
+    % \draw[-latex, thick] let \p1=(tp.north), \p2=(randomization.south) in (\x1, \y2-5mm) -- (tp.north);
+    %
+    % % Relier les données aux arbres (boosting)
+    \draw let \p1=(t1.north), \p2=(features.south) in (\x1, \y2-5mm) |- (\x2, \y2-5mm) -| (features.south);
+    \draw let \p1=(tp.north), \p2=(features.south) in (\x1, \y2-5mm) |- (\x2, \y2-5mm) -| (features.south);
+    \draw[-latex, thick] let \p1=(t1.north), \p2=(features.south) in (\x1, \y2-5mm) -- (t1.north);
+    \draw[-latex, thick] let \p1=(t2.north), \p2=(features.south) in (\x1, \y2-5mm) -- (t2.north);
+    \draw[-latex, thick] let \p1=(tk.north), \p2=(features.south) in (\x1, \y2-5mm) -- (tk.north);
+    \draw[-latex, thick] let \p1=(tp.north), \p2=(features.south) in (\x1, \y2-5mm) -- (tp.north);
+    %
+     % Les flèches de résidus version 2
+    \draw[-latex, red] let \p1=(target.west), \p2=(t1.north) in (target.west) |- (\x2 - 5mm, \y1) -| (\x2 - 5mm, \y2);
+    \draw[-latex, red] let \p1=(formule_tree1.east), \p2 = (t2.north) in (formule_tree1.east) -- (\x1+5mm, \y1) -- (\x1+5mm, \y2+5mm) -- (\x2-5mm, \y2+5mm) node[midway,above,align=center,text width=2.5cm] {
+        Residual
+        \\ $ y - f_1\left(X, \hat{\theta}_1 \right)$
+    } -- (\x2-5mm, \y2) ;
+    \draw[red] let \p1=(formule_tree2.east), \p2 = (tk.north) in (formule_tree2.east) -- (\x1+6mm, \y1) -- (\x1+6mm, \y2+5mm) -- (\x1+8mm, \y2+5mm) ;
+    \draw[red, dashed] let \p1=(formule_tree2.east), \p2 = (tk.north) in (\x1+8mm, \y2+5mm) -- (\x2-8mm, \y2+5mm) node[midway,above,align=center,text width=3.2cm,xshift = -2mm] {
+        Residual
+        \\ $ y - \sum_{1}^{k-1} f_i\left(X, \hat{\theta}_i \right)$
+    } ;
+    \draw[-latex, red] let \p1=(formule_tree2.east), \p2 = (tk.north) in (\x2-8mm, \y2+5mm) -- (\x2-4mm, \y2+5mm) -- (\x2-4mm, \y2) ;
+    \draw[red] let \p1=(formule_treek.east), \p2 = (tp.north) in (formule_treek.east) -- (\x1+4mm, \y1) -- (\x1+4mm, \y2+5mm) -- (\x1+8mm, \y2+5mm) ;
+    \draw[red, dashed] let \p1=(formule_treek.east), \p2 = (tp.north) in (\x1+8mm, \y2+5mm) -- (\x2-8mm, \y2+5mm) node[midway,above,align=center,text width=3.2cm,xshift = -2mm] {
+        Residual
+        \\ $ y - \sum_{1}^{p-1} f_i\left(X, \hat{\theta}_i \right)$
+    } ;
+    \draw[-latex, red] let \p1=(formule_treek.east), \p2 = (tp.north) in (\x2-8mm, \y2+5mm) -- (\x2-4mm, \y2+5mm) -- (\x2-4mm, \y2) ;
+    %
+    % Le cadre de la figure, impérativement en dernier
+    \node[fit=(current bounding box),inner sep=5mm, draw = black!27, thick]{};
+    \end{tikzpicture}
+```
+
+```{tikz boosting, echo=FALSE, fig.align="center"}
+\tikzset{
+    s2/.style={rectangle split,rectangle split horizontal,
+        rectangle split parts=2,draw},
+    sd/.style={append after command={%
+        (\tikzlastnode.#1 south|-\tikzlastnode.center)
+        coordinate[circle,inner sep=1pt,fill,alias=\tikzlastnode-cheat]}
+    },
+    s2l/.style={s2,sd=two},
+    s2r/.style={s2,sd=one},
+    c/.style={circle,draw,fill=gray,minimum size=1em},
+    fit margins/.style={
+        /tikz/afit/.cd,#1,
+        /tikz/.cd,
+        inner xsep=\pgfkeysvalueof{/tikz/afit/left}+\pgfkeysvalueof{/tikz/afit/right},
+        inner ysep=\pgfkeysvalueof{/tikz/afit/top}+\pgfkeysvalueof{/tikz/afit/bottom},
+        xshift=-\pgfkeysvalueof{/tikz/afit/left}+\pgfkeysvalueof{/tikz/afit/right},
+        yshift=-\pgfkeysvalueof{/tikz/afit/bottom}+\pgfkeysvalueof{/tikz/afit/top}
+    },
+    afit/.cd,left/.initial=4pt,right/.initial=4pt,bottom/.initial=4pt,top/.initial=1em}
+\tikzset{
+%  font=\Large\sffamily\bfseries,
+  red arrow/.style={
+    midway,red,sloped,fill, minimum height=3cm, single arrow, single arrow head extend=.5cm, single arrow head indent=.25cm,xscale=0.3,yscale=0.15,
+    allow upside down
+  },
+  tree box/.style={draw, rounded corners, inner sep=1em},
+  node box/.style={white, draw=black, text=black, rectangle, rounded corners},
+}
+\usetikzlibrary{
+    positioning,
+    decorations.pathreplacing,
+    arrows, arrows.meta,
+    shapes,
+    shapes.symbols,
+    shapes.multipart,
+    automata,
+    calc,
+    fit,
+    backgrounds,
+}
+    \begin{tikzpicture}[
+        level 1/.style = {sibling distance = 1.1cm}, 
+        level 2/.style = {sibling distance = 0.55cm},
+        % level 3/.style = {sibling distance = 3cm},
+        % level 4/.style = {sibling distance = 3cm},
+        % level 5/.style = {sibling distance = 1.5cm},
+    ]
+    \node[circle, fill = red!30, inner sep = 1.5mm, draw = black] (a1) {}    % root node (0th level)
+        child { 
+            node[circle, fill = green!30, inner sep = 1.5mm, draw = black] {}
+            child { 
+                node[circle, fill = blue!30, inner sep = 1.5mm, draw = black] (a2) {}
+            }
+            child { 
+                node[circle, fill = blue!30, inner sep = 1.5mm, draw = black] {}
+            } 
+        }
+        child { 
+            node[circle, fill = green!30, inner sep = 1.5mm, draw = black] (a3) {}
+        }
+    ;
+    \node[right = 3cm of a1, circle, fill = red!30, inner sep = 1.5mm, draw = black] (b1) {}    % root node (0th level)
+        child { 
+            node[circle, fill = green!30, inner sep = 1.5mm, draw = black] {}
+            child { 
+                node[circle, fill = blue!30, inner sep = 1.5mm, draw = black] (b2) {}
+        }
+            child { 
+                node[circle, fill = blue!30, inner sep = 1.5mm, draw = black] {}
+            } 
+        }
+        child { 
+            node[circle, fill = green!30, inner sep = 1.5mm, draw = black] (b4) {}
+            child { 
+                node[circle, fill = blue!30, inner sep = 1.5mm, draw = black] {}
+        }
+            child { 
+                node[circle, fill = blue!30, inner sep = 1.5mm, draw = black] (b3) {}
+            } 
+        }
+    
+    ;
+    \node[right = 4cm of b1, circle, fill = red!30, inner sep = 1.5mm, draw = black] (c1) {}    % root node (0th level)
+        child { 
+            node[circle, fill = green!30, inner sep = 1.5mm, draw = black] (c4) {}
+            child { 
+                node[circle, fill = blue!30, inner sep = 1.5mm, draw = black] (c2) {}
+            }
+            child { 
+                node[circle, fill = blue!30, inner sep = 1.5mm, draw = black] {}
+            } 
+        }
+        child { 
+            node[circle, fill = green!30, inner sep = 1.5mm, draw = black] (c3) {}
+        }
+    ;
+    \node[right =  4cm of c1, circle, fill = red!30, inner sep = 1.5mm, draw = black] (d1) {}    % root node (0th level)
+        child { 
+            node[circle, fill = green!30, inner sep = 1.5mm, draw = black] {}
+            child { 
+                node[circle, fill = blue!30, inner sep = 1.5mm, draw = black] (d2) {}
+            }
+            child { 
+                node[circle, fill = blue!30, inner sep = 1.5mm, draw = black] {}
+            } 
+        }
+        child { 
+            node[circle, fill = green!30, inner sep = 1.5mm, draw = black] (d3) {}
+        }
+    ;
+    % Faire les petits points
+    \path let \p1 = (b4), \p2 = (c4) in node[] at (\x1 / 2 + \x2 / 2 + 1mm, \y1) {\LARGE \bf $\dots$};
+    \path let \p1 = (c4) in node[] at (\x1 + 28mm, \y1) {\LARGE \bf $\dots$};
+    %
+    % % faire des boîtes autour des arbres
+    \node[node box, dashed, fit=(a1)(a2)(a3), fit margins={}](t1){};
+    \node[node box, dashed, fit=(b1)(b2)(b3), fit margins={}](t2){};
+    \node[node box, dashed, fit=(c1)(c2)(c3), fit margins={}](tk){};
+    \node[node box, dashed, fit=(d1)(d2)(d3), fit margins={}](tp){};
+    %
+    % Mettre des étiquetts aux arbres
+    \node[below right=0.5em, inner sep=0pt] at (t1.north west) {Tree 1};
+    \node[below right=0.5em, inner sep=0pt] at (t2.north west) {Tree 2};
+    \node[below right=0.5em, inner sep=0pt] at (tk.north west) {Tree $k$};
+    \node[below right=0.5em, inner sep=0pt] at (tp.north west) {Tree $p$};
+    %
+    % Mettre les formules sous les arbres
+    \node[below = 2em, node box] (formule_tree1) at (t1.south) {{$\displaystyle f_1\left(X, \hat{\theta}_1 \right)$}};
+    \path let \p1=(t2.south), \p2=(formule_tree1.west) in node[node box] (formule_tree2) at (\x1,\y2) {{$\displaystyle f_2\left(X, \hat{\theta}_2 \right)$}};
+    \path let \p1=(tk.south), \p2=(formule_tree1.west) in node[node box] (formule_treek) at (\x1,\y2) {{$\displaystyle f_k\left(X, \hat{\theta}_k \right)$}};
+    \path let \p1=(tp.south), \p2=(formule_tree1.west) in node[node box] (formule_treep) at (\x1,\y2) {{$\displaystyle f_p\left(X, \hat{\theta}_p \right)$}};
+    %
+    % Relier les arbres aux formules
+    \draw[-latex, thick] (t1.south) -- (formule_tree1.north);
+    \draw[-latex, thick] (t2.south) -- (formule_tree2.north);
+    \draw[-latex, thick] (tp.south) -- (formule_treep.north);
+    \draw[-latex, thick] let \p1=(formule_treek.north), \p2=(t1.south) in (\x1,\y2) -- (formule_treek.north);
+    \node[below = 1cm, node box] (prediction) at (current bounding box.south) {{$\displaystyle \hat{y}=\sum_{k=1}^{p} f_k\left(X, \hat{\theta}_k \right)$}};
+    %
+     % Relier les formules à la prédiction
+    \draw[-latex, thick] let \p1=(formule_tree1.south), \p2=(prediction.north) in (\x1, \y2+5mm) |- (\x2, \y2+5mm) -| (prediction.north);
+    \draw[-latex, thick] let \p1=(formule_treep.south), \p2=(prediction.north) in (\x1, \y2+5mm) |- (\x2, \y2+5mm) -| (prediction.north);
+    \draw let \p1=(formule_tree1.south), \p2=(prediction.north) in (formule_tree1.south) -- (\x1, \y2+5mm);
+    \draw let \p1=(formule_tree2.south), \p2=(prediction.north) in (formule_tree2.south) -- (\x1, \y2+5mm);
+    \draw let \p1=(formule_treek.south), \p2=(prediction.north) in (formule_treek.south) -- (\x1, \y2+5mm);
+    \draw let \p1=(formule_treep.south), \p2=(prediction.north) in (formule_treep.south) -- (\x1, \y2+5mm);
+     % Les flèches de résidus version 1
+    %\draw[-latex, thick, red] (formule_tree1.east) -- (t2.south west) node[midway,above,sloped] {Residual};
+    %\draw[-latex, thick, red] let \p1=(formule_tree1.east), \p2 = (t2.south west), \p3 = (formule_tree2.east) in (formule_tree2.east) -- (\x3+\x2-\x1, \y2) node[midway,above,sloped] {Residual};
+    %\draw[-latex, thick, red] let \p1=(formule_treep.west), \p2 = (formule_tree1.east), \p3 = (t2.south west) in (\x1-\x3+\x2, \y1) -- (tp.south west) node[midway,above,sloped] {Residual};
+    %
+    % Ajouter le dataset
+    \node[above, xshift =  1cm, yshift = 2.5cm, node box] (features) at (current bounding box.north) {Features $X$};
+    \node[left = 3mm of features, node box] (target) {Target $y$};
+    %
+    % Relier les données aux arbres (random forest)
+    % \node[node box, fit=(features)(target), inner sep = 2mm](dataset){};
+    % \node[below = 5mm of dataset, node box] (randomization) {Random subsample of rows and columns};
+    % \draw[-latex, thick] (dataset.south) -| (randomization.north);
+    % \draw let \p1=(t1.north), \p2=(randomization.south) in (\x1, \y2-5mm) |- (\x2, \y2-5mm) -| (randomization.south);
+    % \draw let \p1=(tp.north), \p2=(randomization.south) in (\x1, \y2-5mm) |- (\x2, \y2-5mm) -| (randomization.south);
+    % \draw[-latex, thick] let \p1=(t1.north), \p2=(randomization.south) in (\x1, \y2-5mm) -- (t1.north);
+    % \draw[-latex, thick] let \p1=(t2.north), \p2=(randomization.south) in (\x1, \y2-5mm) -- (t2.north);
+    % \draw[-latex, thick] let \p1=(tk.north), \p2=(randomization.south) in (\x1, \y2-5mm) -- (tk.north);
+    % \draw[-latex, thick] let \p1=(tp.north), \p2=(randomization.south) in (\x1, \y2-5mm) -- (tp.north);
+    %
+    % % Relier les données aux arbres (boosting)
+    \draw let \p1=(t1.north), \p2=(features.south) in (\x1, \y2-5mm) |- (\x2, \y2-5mm) -| (features.south);
+    \draw let \p1=(tp.north), \p2=(features.south) in (\x1, \y2-5mm) |- (\x2, \y2-5mm) -| (features.south);
+    \draw[-latex, thick] let \p1=(t1.north), \p2=(features.south) in (\x1, \y2-5mm) -- (t1.north);
+    \draw[-latex, thick] let \p1=(t2.north), \p2=(features.south) in (\x1, \y2-5mm) -- (t2.north);
+    \draw[-latex, thick] let \p1=(tk.north), \p2=(features.south) in (\x1, \y2-5mm) -- (tk.north);
+    \draw[-latex, thick] let \p1=(tp.north), \p2=(features.south) in (\x1, \y2-5mm) -- (tp.north);
+    %
+     % Les flèches de résidus version 2
+    \draw[-latex, red] let \p1=(target.west), \p2=(t1.north) in (target.west) |- (\x2 - 5mm, \y1) -| (\x2 - 5mm, \y2);
+    \draw[-latex, red] let \p1=(formule_tree1.east), \p2 = (t2.north) in (formule_tree1.east) -- (\x1+5mm, \y1) -- (\x1+5mm, \y2+5mm) -- (\x2-5mm, \y2+5mm) node[midway,above,align=center,text width=2.5cm] {
+        Residual
+        \\ $ y - f_1\left(X, \hat{\theta}_1 \right)$
+    } -- (\x2-5mm, \y2) ;
+    \draw[red] let \p1=(formule_tree2.east), \p2 = (tk.north) in (formule_tree2.east) -- (\x1+6mm, \y1) -- (\x1+6mm, \y2+5mm) -- (\x1+8mm, \y2+5mm) ;
+    \draw[red, dashed] let \p1=(formule_tree2.east), \p2 = (tk.north) in (\x1+8mm, \y2+5mm) -- (\x2-8mm, \y2+5mm) node[midway,above,align=center,text width=3.2cm,xshift = -2mm] {
+        Residual
+        \\ $ y - \sum_{1}^{k-1} f_i\left(X, \hat{\theta}_i \right)$
+    } ;
+    \draw[-latex, red] let \p1=(formule_tree2.east), \p2 = (tk.north) in (\x2-8mm, \y2+5mm) -- (\x2-4mm, \y2+5mm) -- (\x2-4mm, \y2) ;
+    \draw[red] let \p1=(formule_treek.east), \p2 = (tp.north) in (formule_treek.east) -- (\x1+4mm, \y1) -- (\x1+4mm, \y2+5mm) -- (\x1+8mm, \y2+5mm) ;
+    \draw[red, dashed] let \p1=(formule_treek.east), \p2 = (tp.north) in (\x1+8mm, \y2+5mm) -- (\x2-8mm, \y2+5mm) node[midway,above,align=center,text width=3.2cm,xshift = -2mm] {
+        Residual
+        \\ $ y - \sum_{1}^{p-1} f_i\left(X, \hat{\theta}_i \right)$
+    } ;
+    \draw[-latex, red] let \p1=(formule_treek.east), \p2 = (tp.north) in (\x2-8mm, \y2+5mm) -- (\x2-4mm, \y2+5mm) -- (\x2-4mm, \y2) ;
+    %
+    % Le cadre de la figure, impérativement en dernier
+    \node[fit=(current bounding box),inner sep=5mm, draw = black!27, thick]{};
+    \end{tikzpicture}
 ```
 
