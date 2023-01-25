@@ -28,6 +28,8 @@ from: markdown+emoji
 bibliography: references.bib
 ---
 
+# Introduction
+
 ```{r, echo = FALSE, message=FALSE, warning=FALSE, results='hide'}
 library(magrittr)
 list.files(path = "/home/onyxia/work/formation_boosting/slides/production_figures_files/figure-pdf/", full.names = TRUE,
@@ -51,8 +53,6 @@ list.files(path = "/home/onyxia/work/formation_boosting/slides/production_figure
 ```
 
 
-# Introduction
-
 ## La notion de bonnes pratiques
 
 - [**Origine**]{.blue2} : communauté des développeurs logiciels
@@ -69,9 +69,56 @@ list.files(path = "/home/onyxia/work/formation_boosting/slides/production_figure
 conventionnellement acceptées comme produisant des logiciels [**fiables**]{.orange}, [**évolutifs**]{.orange} et [**maintenables**]{.orange}
 
 
-# Un graphique
+## Pleins d'équations en vrac
 
-Dudu
+$$\hat{y}_{i} =  \sum_{k=1}^{K} f_k(x_i), f_k \epsilon \mathcal{F}$$
+$\hat{y}_{i} =  \sum_{k=1}^{K} f_k(x_i), f_k \epsilon \mathcal{F}$
+
+$\displaystyle \hat{y}_{i} =  \sum_{k=1}^{K} f_k(x_i), f_k \epsilon \mathcal{F}$
+
+
+
+$obj(\theta) = \sum_{i}^{n} l(y_{i}, \hat{y}_{i}) + \sum_{k=1}^K \Omega(f_{k})$
+
+$\hat{y}_i^{(0)} =0\\ \hat{y}_i^{(1)} =  f_1(x_i) = \hat{y}_i^{(0)} + f_1(x_i)\\ \hat{y}_i^{(2)} = f_1(x_i) + f_2(x_i)= \hat{y}_i^{(1)} + f_2(x_i)\\ ....\\ \hat{y}_i^{(t)} = \sum_{k=1}^t f_k(x_i)= \hat{y}_i^{(t-1)} + f_t(x_i)$
+
+
+## Encore des équations
+
+$$\begin{aligned}obj^{(t)}  &= \sum_{i=1}^{n} l(y_i, \hat{y}_{i}^{(t)}) + \sum_{i=1}^t\Omega(f_i) \\           &= \sum_{i=1}^{n} l(y_i, \hat{y}_{i}^{(t-1)} + f_{t}(x_i)) + \Omega(f_t) + constant\end{aligned}$$
+
+$obj^{(t)}  = \sum_{i=1}^n (y_{i} - (\hat{y}_{i}^{(t-1)} + f_t(x_i)))^2 + \sum_{i=1}^t\Omega(f_i) \\           = \sum_{i=1}^n [2(\hat{y}_i^{(t-1)} - y_i)f_t(x_i) + f_t(x_i)^2] + \Omega(f_t) + constant$
+
+$obj^{(t)} = \sum_{i=1}^{n} [l(y_i, \hat{y}_i^{(t-1)}) + g_i f_t(x_i) + \frac{1}{2} h_{i} f_{t}^2(x_i)] + \Omega(f_t) + constant$
+
+## Toujours des équations
+
+$$g_i = \frac{\partial l(y_i, \hat{y}_i^{(t-1)})}{\partial\hat{y}_i^{(t-1)}}$$
+$$h_i = \frac{\partial^2 l(y_i, \hat{y}_i^{(t-1)})}{{\partial \hat{y}_i^{(t-1)}}^2}$$
+
+ 
+$\sum_{i=1}^n [g_{i} f_{t}(x_i) + \frac{1}{2} h_{i} f_{t}^2(x_i)] + \Omega(f_t)$
+
+$f_t(x) = w_{q(x)}, w \in R^{T}, q:R^d\rightarrow \{1,2,...,T\}$
+
+## Ya encore des équations
+
+
+$\Omega(f) = \gamma T + \frac{1}{2}\lambda \sum_{j=1}^T w_j^2
+obj^{(t)} \approx \sum_{i=1}^n [g_i w_{q(x_i)} + \frac{1}{2} h_i w_{q(x_i)}^2] + \gamma T + \frac{1}{2}\lambda \sum_{j=1}^T w_j^2\\ = \sum^T_{j=1} [(\sum_{i\in I_j} g_i) w_j + \frac{1}{2} (\sum_{i\in I_j} h_i + \lambda) w_j^2 ] + \gamma T$
+
+$obj^{(t)} = \sum^T_{j=1} [G_jw_j + \frac{1}{2} (H_j+\lambda) w_j^2] +\gamma T$
+
+$G_j = \sum_{i\in I_j} g_i\\ H_j = \sum_{i\in I_j} h_i$
+
+$w_j^{\ast} = -\frac{G_j}{H_j+\lambda}\\ \text{obj}^{\ast} = -\frac{1}{2} \sum_{j=1}^T \frac{G_j^2}{H_j+\lambda} + \gamma T$
+
+$Gain = \frac{1}{2} \left[\frac{G_L^2}{H_L+\lambda}+\frac{G_R^2}{H_R+\lambda}-\frac{(G_L+G_R)^2}{H_L+H_R+\lambda}\right] - \gamma$
+
+
+
+
+
 
 <!-- <iframe width="560" height="315" src="/home/onyxia/work/formation_boosting/slides/production_figures_files/figure-pdf/rf-1.pdf"></iframe> -->
 
