@@ -18,6 +18,7 @@ chalkboard: # press the B key to toggle chalkboard
 # uncomment to use the multiplex mode:
 #multiplex: true
 format:
+  keep-tex: true
   # pick the light mode (onyxia-revealjs) or the dark mode (onyxia-dark-revealjs)
   onyxia-revealjs:
   #onyxia-dark-revealjs:
@@ -51,7 +52,7 @@ conventionnellement acceptées comme produisant des logiciels [**fiables**]{.ora
 ---
 # Un graphique
 
-```{r, engine = 'tikz'}
+```{r, engine = 'tikz', fig.ext='svg'}
 \tikzset{
     s2/.style={rectangle split,rectangle split horizontal,
         rectangle split parts=2,draw},

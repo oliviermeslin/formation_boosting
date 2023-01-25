@@ -1,0 +1,59 @@
+---
+title: "test_svg_qmd2"
+author: "Olivier"
+format: revealjs
+editor: visual
+---
+
+## Quarto
+
+Quarto enables you to weave together content and executable code into a finished presentation. To learn more about Quarto presentations see <https://quarto.org/docs/presentations/>.
+
+## Bullets
+
+When you click the **Render** button a document will be generated that includes:
+
+-   Content authored with markdown
+-   Output from executable code
+
+## Code
+
+When you click the **Render** button a presentation will be generated that includes both content and the output of embedded code. You can embed code like this:
+
+```{r}
+1 + 1
+```
+
+## Test Tikz
+
+When you click the **Render** button a presentation will be generated that includes both content and the output of embedded code. You can embed code like this:
+
+```{r engine = 'tikz', empty-dag, echo=FALSE, dev = "svg"}
+\usetikzlibrary{positioning}
+\begin{tikzpicture}[every node/.append style={draw, minimum size=0.5cm}]
+\node [circle] (X) at (0,0) {aaaa};
+\node [circle] (Y) at (2,0) {bbbb};
+\node [rectangle] (Z) at (1,1) {};
+\path [-latex] (X) edge (Y);
+\draw [-latex] (Z) edge (Y);
+\draw [-latex] (Z) edge (X);
+\end{tikzpicture}
+```
+
+
+
+<!-- WARNING: map file ps2pk.map not found -->
+<!-- WARNING: map file pdftex.map not found -->
+<!-- WARNING: map file dvipdfm.map not found -->
+<!-- WARNING: map file psfonts.map not found -->
+<!-- WARNING: none of the default map files could be found -->
+<!-- WARNING: font file 'cmr10.mf' not found -->
+<!-- pre-processing DVI file (format version 2) -->
+<!-- WARNING: PostScript header file tex.pro not found -->
+<!-- WARNING: PostScript header file texps.pro not found -->
+<!-- WARNING: PostScript header file special.pro not found -->
+<!-- WARNING: PostScript header file color.pro not found -->
+<!-- PostScript error: undefined in TeXDict -->
+
+
+

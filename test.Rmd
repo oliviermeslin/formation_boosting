@@ -1,0 +1,18 @@
+---
+title: "Untitled"
+author: "Olivier"
+date: "2023-01-25"
+output: pdf_document
+---
+  
+```{tikz empty-dag, echo=FALSE, fig.cap="Empty DAG", fig.align="center"}
+\usetikzlibrary{positioning}
+\begin{tikzpicture}[every node/.append style={draw, minimum size=0.5cm}]
+\node [circle] (X) at (0,0) {aaaa};
+\node [circle] (Y) at (2,0) {bbbb};
+\node [rectangle] (Z) at (1,1) {};
+\path [-latex] (X) edge (Y);
+\draw [-latex] (Z) edge (Y);
+\draw [-latex] (Z) edge (X);
+\end{tikzpicture}
+```
