@@ -1,5 +1,5 @@
 ---
-title: Olivier est un clown
+title: Introduction aux algorithmes de _boosting_
 subtitle: |
   **[Une formation pour le découvrir]{.orange}**
 author: |
@@ -7,7 +7,7 @@ author: |
 # date: 
 slide-number: true
 footer: |
-  Olivier va-t-il s'en rendre compte ?
+  Introduction aux algorithmes de _boosting_
 # uncomment for French presentations:
 #lang: fr-FR
 # for blind readers:
