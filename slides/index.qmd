@@ -1,7 +1,7 @@
 ---
 title: Introduction aux algorithmes de _boosting_
 subtitle: |
-  **[Une formation pour le découvrir]{.orange}**
+  **[On va vous décoiffer le gradient!]{.orange}**
 author: |
   [Olivier Meslin](https://github.com/oliviermeslin)
 # date: 
@@ -22,11 +22,39 @@ format:
   onyxia-revealjs:
   #onyxia-dark-revealjs:
     output-file: index.html
-controls: true
+    include-in-header:
+      - file: tikzjax.html
+    controls: true
 css: custom.css
 from: markdown+emoji
 bibliography: references.bib
 ---
+
+## Plan
+
+- Un peu d'histoire
+- Présentation intuitive  des algorithmes de RF et de boosting:
+    - Les arbres de décision;
+    - Les algorithmes de RF et de boosting avec les figures;
+    - Faire rapidement la liste des hyperparamètres, en faisant des groupes cohérents (arbre unitaire, ensemble, training);
+- Comment entraîne-t-on un modèle de ML?
+
+
+
+- Les sujets avancés:
+    - Changer la fonction de perte;
+    - Changer la métrique d'évaluation;
+
+- Illustration
+- 
+- Faire Rapidement la liste des hyperparamètres, en faisant des groupes cohérents (arbre unitaire, ensemble, training);
+- 
+
+- 
+- Les hyperparamètres
+
+- Les sujets avancés
+
 
 # Introduction
 
@@ -52,6 +80,20 @@ list.files(path = "/home/onyxia/work/formation_boosting/slides/production_figure
   )
 ```
 
+## Un peu d'histoire
+
+<!-- Thoughts on Hypothesis Boosting, https://www.cis.upenn.edu/~mkearns/papers/boostnote.pdf -->
+<!-- Robert E. Schapire, The Strength of Weak Learnability -->
+<!-- https://maxhalford.github.io/blog/lightgbm-focal-loss/ -->
+<!-- https://web.njit.edu/~usman/courses/cs675_fall16/BoostedTree.pdf -->
+<!-- https://neptune.ai/blog/lightgbm-parameters-guide -->
+
+- Parler des résultats sur les _weak learners_ et _strong learners_;
+- Parler de la GBM
+- AdaBoost
+- XGBoost, LightGBM, CatBoost
+
+
 
 ## La notion de bonnes pratiques
 
@@ -67,6 +109,8 @@ list.files(path = "/home/onyxia/work/formation_boosting/slides/production_figure
 
 - [**Conséquence**]{.blue2} : un ensemble de [**règles informelles**]{.orange},
 conventionnellement acceptées comme produisant des logiciels [**fiables**]{.orange}, [**évolutifs**]{.orange} et [**maintenables**]{.orange}
+
+
 
 
 ## Pleins d'équations en vrac
