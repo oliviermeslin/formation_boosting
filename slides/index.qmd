@@ -87,6 +87,8 @@ list.files(path = "/home/onyxia/work/formation_boosting/slides/production_figure
 <!-- https://maxhalford.github.io/blog/lightgbm-focal-loss/ -->
 <!-- https://web.njit.edu/~usman/courses/cs675_fall16/BoostedTree.pdf -->
 <!-- https://neptune.ai/blog/lightgbm-parameters-guide -->
+<!-- https://rajatmshukla.wordpress.com/2023/02/01/learning-about-gradient-boosting-using-xgboost/ -->
+<!-- https://www.linkedin.com/posts/damienbenveniste_machinelearning-datascience-artificialintelligence-activity-7026952338951016448-KtxP?utm_source=share&utm_medium=member_android -->
 
 - Parler des résultats sur les _weak learners_ et _strong learners_;
 - Parler de la GBM
