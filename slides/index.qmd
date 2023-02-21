@@ -91,17 +91,25 @@ list.files(path = "/home/onyxia/work/formation_boosting/slides/production_figure
 - Présenter les arbres de régression et de classification. Les notions importantes: splits, noeuds terminaux, partition des données, valeurs, prédictions, profondeur, nombre de feuilles.
 - Parler rapidement des résultats sur les _weak learners_ et _strong learners_; Shapire 1990. Principe du _hypothesis boosting_. - AdaBoost est un exemple de boosting qui n'est pas du _gradient boosting_.
 - Parler de la GBM, Friedman 2001. _Forward stagewise additive modelling_ (modélisation additive itérative). Centrer la présentation sur l'idée du _gradient boosting_. 
-- Dire que plusieurs implémentations des approches de _gradient boosting_ sont envisageables: XGBoost, LightGBM, CatBoost
+- Dire que plusieurs implémentations des approches de _gradient boosting_ sont envisageables: XGBoost, LightGBM, CatBoost.
 
 - Les composantes des modèles de _gradient boosting_:
     - Sur le modèle additif lui-même: nombre d'arbres et _learning rate_;
-    - Sur la construction des arbres eux-mêmes;
-    - Sur les fonctions de perte.
+    - Sur la construction des arbres eux-mêmes: 
+        - Paramètres de l'arbre: nombre de feuilles et profondeur, `min_child_weight`;
+        - Mode de recherche des splits: `tree_method` (hist, exact, approx), `max_bins`:
+        - Données utilisées pour la recherche des splits: _subsample_;
+        - Régularisation (signification de chaque hyperparamètre: lambda, alpha, gamma).
+    - Sur les fonctions de perte:
+        - Expliquer qu'il faut fournir simplement l(), g() et h().
+        - Donner des exemples: perte plus exponentielle que la perte quadratique.
+        - Expliquer que le modèle final est indépendant de la fonction de perte utilisée pour entraîner le modèle.
 
 - Extensions:
     - Raffiner les fonctions de perte;
-    - Traiter les variables catégorielles.
-
+    - Traiter les variables catégorielles;
+    - Les pondérations: `scale_pos_weight` et `sample_weight`;
+    - Utiliser un _warm start_: `base_margin`.
 
 ## La notion de bonnes pratiques
 
