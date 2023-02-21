@@ -99,7 +99,7 @@ list.files(path = "/home/onyxia/work/formation_boosting/slides/production_figure
         - Paramètres de l'arbre: nombre de feuilles et profondeur, `min_child_weight`;
         - Mode de recherche des splits: `tree_method` (hist, exact, approx), `max_bins`:
         - Données utilisées pour la recherche des splits: _subsample_;
-        - Régularisation (signification de chaque hyperparamètre: lambda, alpha, gamma).
+        - Régularisation (signification de chaque hyperparamètre: lambda, alpha, gamma, gain minimum).
     - Sur les fonctions de perte:
         - Expliquer qu'il faut fournir simplement l(), g() et h().
         - Donner des exemples: perte plus exponentielle que la perte quadratique.
