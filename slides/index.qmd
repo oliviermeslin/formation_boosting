@@ -32,6 +32,13 @@ bibliography: references.bib
 
 ## Plan
 
+<!-- Des macros pour Mathjax -->
+::: {.hidden}
+$$
+  \DeclareMathOperator*{\argmin}{arg\,min}
+$$
+:::
+
 - Un peu d'histoire
 - Présentation intuitive  des algorithmes de RF et de boosting:
     - Les arbres de décision;
@@ -88,9 +95,17 @@ list.files(path = "/home/onyxia/work/formation_boosting/slides/production_figure
 <!-- https://web.njit.edu/~usman/courses/cs675_fall16/BoostedTree.pdf -->
 <!-- https://neptune.ai/blog/lightgbm-parameters-guide -->
 
+
+## Des éléments sur `lightGBM`
+
+- une présentation intéressante du GB: https://jmarkhou.com/lgbqr/
+- Comment lightGBM choisit le poids de chaque feuille terminale: https://stackoverflow.com/questions/60137453/how-does-lightgbm-or-other-boosted-trees-implementations-with-2nd-order-approxi
+
+## Plan
+
 - Présenter les arbres de régression et de classification. Les notions importantes: splits, noeuds terminaux, partition des données, valeurs, prédictions, profondeur, nombre de feuilles.
 - Parler rapidement des résultats sur les _weak learners_ et _strong learners_; Shapire 1990. Principe du _hypothesis boosting_. - AdaBoost est un exemple de boosting qui n'est pas du _gradient boosting_.
-- Parler de la GBM, Friedman 2001. _Forward stagewise additive modelling_ (modélisation additive itérative). Centrer la présentation sur l'idée du _gradient boosting_. 
+- Parler de la GBM, Friedman 2001. _Forward stagewise additive modelling_ (modélisation additive itérative). Centrer la présentation sur l'idée du _gradient boosting_.
 - Dire que plusieurs implémentations des approches de _gradient boosting_ sont envisageables: XGBoost, LightGBM, CatBoost.
 
 - Les composantes des modèles de _gradient boosting_:
@@ -126,6 +141,70 @@ list.files(path = "/home/onyxia/work/formation_boosting/slides/production_figure
 - [**Conséquence**]{.blue2} : un ensemble de [**règles informelles**]{.orange},
 conventionnellement acceptées comme produisant des logiciels [**fiables**]{.orange}, [**évolutifs**]{.orange} et [**maintenables**]{.orange}
 
+# Généralités sur le _machine learning_
+
+## Objectif
+
+L'objectif général des algorithmes de _machine learning_ est d'[__approximer une fonction $\hat{F}$__]{.orange} qui prédit une variable $y$ à partir de variables $\mathbf{x}$: $$\hat{y} = \hat{F} \left(\mathbf{x} \right)$$
+
+. . .
+
+Les algorithmes peuvent avoir des objectifs différents:
+
+::: {.small80}
+:::: {.incremental}
+
+- [__Régression__]{.blue2}: Prédire une variable __continue__. <br/>
+Ex: prédire le prix d'un logement à partir de ses caractéristiques.
+    
+- [__Classification binaire__]{.blue2}: Prédire une variable __dichotomique__. <br/>
+Ex: prédire si un individu est présent sur le territoire national.
+    
+- [__Classification multiclasse__]{.blue2}: Prédire une variable __dans un ensemble fini__. <br/>
+Ex: prédire la catégorie NAF d'un emploi à partir de sa description.
+   
+::::
+:::
+
+## Quelques notations
+
+::: {.small80}
+
+| Notation   | Définition                           | Machine learning | Économétrie            |
+|:--:|------|----|----|
+| $y$        | Ce qu'on veut modéliser              | _Target_, _outcome_| Variable dépendante |
+|$\mathbf{x}$| Les variables utilisées pour prédire | _Features_         | Variables indépendantes| 
+| $\left(y_i, \mathbf{x_i} \right)_{i= 1,\dots,n}$ | Les données dont on dispose | _Instances_ | Observations | 
+| $w$ | Les paramètres du modèle | _Weights_| Paramètres ($\beta$)|
+|| Procédure de calcul des paramètres du modèle | _Training_ | Estimation |
+
+: {tbl-colwidths="[15,50,35,30]"}
+
+
+:::
+
+## Fonction de perte
+
+La solution
+
+$$\hat{F} = \argmin_F \mathbb{E}_{y,\mathbf{x}}\left[ L\left(y, F\left(\mathbf{x}\right)\right)\right] $$
+Avec la perte L2 et un modèle linéaire, on retombe sur les OLS!
+
+
+## Entraînement
+
+Définition de l'entraînement.
+
+Train/test/validation
+
+
+## _Gradient boosted regression trees_ (GBRT)
+
+
+
+Beaucoup d'algorithmes
+
+optimiser sur l'espace des paramètres.
 
 
 
@@ -174,8 +253,6 @@ $G_j = \sum_{i\in I_j} g_i\\ H_j = \sum_{i\in I_j} h_i$
 $w_j^{\ast} = -\frac{G_j}{H_j+\lambda}\\ \text{obj}^{\ast} = -\frac{1}{2} \sum_{j=1}^T \frac{G_j^2}{H_j+\lambda} + \gamma T$
 
 $Gain = \frac{1}{2} \left[\frac{G_L^2}{H_L+\lambda}+\frac{G_R^2}{H_R+\lambda}-\frac{(G_L+G_R)^2}{H_L+H_R+\lambda}\right] - \gamma$
-
-
 
 
 
