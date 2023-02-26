@@ -188,7 +188,21 @@ Ex: prédire la catégorie NAF d'un emploi à partir de sa description.
 La solution
 
 $$\hat{F} = \argmin_F \mathbb{E}_{y,\mathbf{x}}\left[ L\left(y, F\left(\mathbf{x}\right)\right)\right] $$
-Avec la perte L2 et un modèle linéaire, on retombe sur les OLS!
+
+. . .
+
+Exemple: On modélise une variable continue avec:
+
+- un modèle linéaire: [$F\left(\mathbf{x}\right) = \mathbf{x} \beta$]{.small80}; 
+- une fonction de perte quadratique: [$L\left(y, F\left(\mathbf{x}\right)\right) =  \left(y - F\left(\mathbf{x}\right)\right)^2$]{.small80}. 
+
+La solution $\hat{F}$ est caractérisée par $\beta$ tel que:
+
+$$\hat{\beta} = \argmin_\beta \sum_{i} \left(y_i - \mathbf{x_i}\beta\right)^2$$
+
+. . .
+
+__Avec la perte quadratique et un modèle linéaire, on retombe sur les OLS!__
 
 
 ## Entraînement
