@@ -181,23 +181,22 @@ Une approche d'apprentissage supervisé comprend toujours trois éléments:
 
 ::: {.small90}
 
-- Un [__modèle__]{.orange} $F$ qui relie $y$ et $\mathbf{x}$ et $y = F\left(\mathbf{x}\right)$;<br/> 
+- Un [__modèle__]{.orange} $F$ qui relie $y$ et $\mathbf{x}$ et $y = F\left(\mathbf{x}, \mathbf{\Theta}\right)$;<br/> 
 Exemple: $y = \mathbf{x} \beta$
 
 - Des [__paramètres__]{.orange} $\Theta = \{w_j\}_{j=1,\dots,d}$ qui doivent être estimés à partir des données; <br/> 
 Exemple: $\beta$ dans $y = \mathbf{x} \beta$
 
-- Une [__fonction objectif__]{.orange} $Obj(\Theta)$ avec une [fonction de perte]{.orange} et un [terme de régularisation]{.orange}.<br/>
+- Une [__fonction objectif__]{.orange} $Obj(\mathbf{\Theta}, y, \mathbf{x})$ avec une [fonction de perte]{.orange} et un [terme de régularisation]{.orange}.<br/>
 :::
 
 . . .
 
-La procédure statistique qui utilise la [__fonction objectif__]{.orange} pour calculer les [__paramètres__]{.orange} du [__modèle__]{.orange} à partir d'un jeu de données $\left(y_i, \mathbf{x_i} \right)_{i= 1,\dots,n}$ est appelée [__entraînement__]{.orange} du modèle.
-
+Petits abus de notation: 
+- on écrit $F\left(\mathbf{x}\right)$ au lieu de $F\left(\mathbf{x}, \mathbf{\Theta}\right)$;
+- on écrit $Obj\left(\Theta\right)$ au lieu de $Obj\left(\Theta, y, \mathbf{x}\right)$;
 
 ## Fonction objectif
-
-$$Obj\left(\Theta\right) = \underbrace{L\left(\Theta\right)}_{\substack{\bf\text{Fonction} \\ \bf\text{de perte}}} + \underbrace{\Omega\left(\Theta\right)}_{\substack{\bf\text{Fonction de} \\ \bf\text{régularisation}}}$$
 
 La fonction objectif rassemble deux fonctions:
 
@@ -207,6 +206,8 @@ La fonction objectif rassemble deux fonctions:
 - La [__fonction de régularisation__]{.orange} $\Omega$ mesure la complexité du modèle.
 :::
 
+$$Obj\left(\Theta, y, \mathbf{x}\right) = \underbrace{L\left(\Theta, y, \mathbf{x}\right)}_{\substack{\bf\text{Fonction} \\ \bf\text{de perte}}} + \underbrace{\Omega\left(\Theta\right)}_{\substack{\bf\text{Fonction de} \\ \bf\text{régularisation}}}$$
+
 
 ## Fonction de perte
 
@@ -214,36 +215,49 @@ La fonction objectif rassemble deux fonctions:
 
 . . .
 
-- Cette fonction est habituellement convexe et dérivable deux fois.
+- Elle est habituellement convexe et dérivable deux fois.
 
 . . .
 
 - Fonctions de perte classiques:
-  - La perte quadratique: [$L\left(y, F\left(\mathbf{x}\right)\right) =  \left(y - F\left(\mathbf{x}\right)\right)^2$]{.small90}
-  - La perte absolue: [$L\left(y, F\left(\mathbf{x}\right)\right) =  \left|y - F\left(\mathbf{x}\right)\right|$]{.small90}
-  - La perte logloss: [$L\left(y, F\left(\mathbf{x}\right)\right) = - \left(y \log \left(p\left(\mathbf{x}\right)\right) + \left(1 - y \right) \log \left(1 - p\left(\mathbf{x}\right)\right)\right)$]{.small90}
+  - La perte quadratique: $L\left(y, F\left(\mathbf{x}\right)\right) =  \left(y - F\left(\mathbf{x}\right)\right)^2$
+  - La perte absolue: $L\left(y, F\left(\mathbf{x}\right)\right) =  \left|y - F\left(\mathbf{x}\right)\right|$
+  - La perte logloss: $L\left(y, F\left(\mathbf{x}\right)\right) = - \left(y \log \left(p\left(\mathbf{x}\right)\right) + \left(1 - y \right) \log \left(1 - p\left(\mathbf{x}\right)\right)\right)$
 
 - Il est possible d'utiliser une fonction de perte plus originale.
 
 ## Fonction de régularisation
 
-- La [__fonction de régularisation__]{.orange} $\Omega$ mesure la complexité du modèle.
+- La [__fonction de régularisation__]{.orange} $\Omega$ mesure la complexité du modèle. Elle croît avec cette complexité:
+  - Nombre de paramètres;
+  - Valeur absolue des paramètres.
 
+. . .
 
+- Fonctions de régularisation classiques:
+  - Aucune régularisation: $\Omega\left(\mathbf{w}\right) = 0$ (fréquent en économétrie!)
+  - La norme L1 (lasso): $\Omega\left(\mathbf{w}\right) = \lambda \sum_{j=1}^d \left|w\right|$
+  - La norme L2 (ridge): $\Omega\left(\mathbf{w}\right) = \lambda \sum_{j=1}^d w^2$
 
+Les fonctions de régularisation peuvent être spécifiques à un algorithme.
 
 ## Entraînement d'un modèle
 
-À partir d'un jeu de données $\left(y_i, \mathbf{x_i} \right)_{i= 1,\dots,n}$, on obtient l'approximation $\hat{F}$ en [minimisant l'espérance conditionnelle]{.orange} de la fonction de perte $L$.
+La procédure statistique qui utilise la [__fonction objectif__]{.orange} pour calculer les [__paramètres__]{.orange} du [__modèle__]{.orange} à partir d'un jeu de données $\left(y_i, \mathbf{x_i} \right)_{i= 1,\dots,n}$ est appelée [__entraînement__]{.orange} du modèle.
 
-$$\hat{F} = \argmin_F \mathbb{E}_{y,\mathbf{x}}\left[ L\left(y, F\left(\mathbf{x}\right)\right)\right] $$
+. . .
+
+À partir d'un jeu de données $\left(y_i, \mathbf{x_i} \right)_{i= 1,\dots,n}$, on obtient l'approximation $\hat{F}$ en [minimisant l'espérance conditionnelle]{.orange} de la fonction bjectif $Obj$.
+
+$$\hat{F} = \argmin_F \mathbb{E}_{y,\mathbf{x}}\left[ Obj\left(y, F\left(\mathbf{x}\right)\right)\right] $$
 
 . . .
 
 Exemple: On modélise une variable continue avec:
 
-- un modèle linéaire: [$F\left(\mathbf{x}\right) = \mathbf{x} \beta$]{.small90}; 
-- une fonction de perte quadratique: [$L\left(y, F\left(\mathbf{x}\right)\right) =  \left(y - F\left(\mathbf{x}\right)\right)^2$]{.small90}. 
+- un modèle linéaire: $F\left(\mathbf{x}\right) = \mathbf{x} \beta$; 
+- une fonction de perte quadratique: $L\left(y, F\left(\mathbf{x}\right)\right) =  \left(y - F\left(\mathbf{x}\right)\right)^2$;
+- pas de fonction de régularisation.
 
 La solution $\hat{F}$ est caractérisée par $\beta$ tel que:
 
