@@ -35,5 +35,7 @@
 .MathJax_Display {
   margin: 0.5em 0 0.5em 0 !important;
 }
-
-
+/* Réduire les listes de niveau 2 */
+li li {
+  font-size: 90%;
+}
