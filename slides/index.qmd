@@ -310,61 +310,76 @@ C'est un problème compliqué car on cherche la fonction $F$ parmi l'ensemble de
 
 ## Estimation paramétrique
 
-- Principe: rechercher $F\left(\mathbf{x}\right)$ dans un ensemble de fonctions paramétrisées par un vecteur fini de paramètres $\theta$. <br/>
-[Exemple: $F\left(\mathbf{x}\right) = \mathbf{x\beta}$ avec $\mathbf{\beta} = \{\beta_1, \dots, \beta_d\}$]{.small90}
+::: {.small90}
 
-. . .
+:::: {.incremental}
 
-- Cette restriction permet de se ramener à un problème d'optimisation sur l'espace des paramètres (plus simple à résoudre): $\hat{F}$ est caractérisée par ses paramètres $\hat{\bf\theta}$ tels que
+- Principe: rechercher $F\left(\mathbf{x}\right)$ dans un ensemble de fonctions paramétrisées par un vecteur fini de paramètres $\theta$. <br/> [Exemple: $F\left(\mathbf{x}\right) = \mathbf{x\beta}$ avec $\mathbf{\beta} = \{\beta_1, \dots, \beta_d\}$]{.small90}
 
-$$\hat{\bf\theta} = \argmin_{\bf\theta} \mathbb{E}_{y,\mathbf{x}}\left[ L\left(y, F\left(\mathbf{x}, \mathbf{\theta}\right)\right)\right]$$
+- Cette restriction permet de se ramener à un problème d'optimisation sur l'espace des paramètres: $\hat{F}$ est caractérisée par ses paramètres $\hat{\bf\theta}$ tels que <br/> $$\hat{\bf\theta} = \argmin_{\bf\theta} \mathbb{E}_{y,\mathbf{x}}\left[ L\left(y, F\left(\mathbf{x}, \mathbf{\theta}\right)\right)\right]$$
+
+- Si on veut obtenir un modèle performant, le nombre de paramètres peut devenir très grand...
+
+::::
+
+:::
+
 ## Les approches ensemblistes
+
+::: {.small90}
+
+:::: {.incremental}
 
 - Principe: créer un modèle très précis (_strong learner_) en combinant un grand nombre de modèles simples (_base learners_ ou _weak learners_).
 
-. . .
-
 - Les méthodes ensemblistes sont diversifiées:
   
-  - La nature du _base learner_;
-  - La méthode pour combiner les _base learners_ (moyenne, vote majoritaire...);
-  - La méthode d'entraînement du modèle.
+  - Nature du _base learner_;
+  - Méthode pour combiner les _base learners_ (moyenne, vote majoritaire...);
+  - Méthode d'entraînement du modèle.
 
-. . .
+- Exemple: $$F\left(\mathbf{x}\right) = \sum_{m=1}^M \beta_m f\left(\mathbf{x}, \mathbf{\theta}_m\right)$$
 
-- Ces approches reposent sur un __fondement théorique précis__ (@shapire1990strength).
+::::
+
+:::
+
 
 ## Les approches ensemblistes
+
+$\hat{F}$ est caractérisée par les paramètres $\{\beta_m, \mathbf{\theta}_m\}_{m=1}^{M}$ tels que
+
+$$ \argmin_{\{\beta_m, \mathbf{\theta}_m\}_{m=1}^{M}} \sum_{i=1}^N L\left(y_i, \sum_{m=1}^M \beta_m f\left(\mathbf{x}_i, \mathbf{\theta}_m\right)\right)$$
 
 
 - Trois grandes approches ensemblistes:
 
-  - _Bagging_ (@breiman1996bagging): chaque modèle est entraîné sur un échantillon aléatoire d'observations;
-  - _Random forest_ (@breiman2001random): chaque modèle est entraîné sur un échantillon aléatoire d'observations et de variables;
-  - _Boosting_: chaque modèle essaie de corriger les modèle erreurs du précédent.
-  
+  - _Bagging_ (@breiman1996bagging): chaque modèle est entraîné séparément sur un échantillon aléatoire d'observations;
+  - _Random forest_ (@breiman2001random): chaque modèle est entraîné séparément sur un échantillon aléatoire d'observations et de variables;
+  - _Boosting_ (@shapire1990strength): chaque modèle essaie de corriger les modèle erreurs du précédent.
+
+<!-- . . . -->
+
+<!-- - L'approche de _boosting_ repose sur un __fondement théorique précis__ (@shapire1990strength). -->
+
+## _Random forests_
+
+![Random forest](production_figures_files/figure-pdf/rf.png)
 
 
+## Le _boosting_
 
-## Les approches de _boosting_
+Le _boosting_ combine une [__approche ensembliste__]{.orange} avec une [__modélisation additive par étapes__]{.orange} (_forward stagewise additive modeling_).
 
-Les approches de _boosting_ sont complètement différentes, et combinent deux caractéristiques:
-
-- Une [__approche ensembliste__]{.orange} (_ensemble method_);
-- Une [__modélisation additive linéaire__]{.orange} (_forward stagewise additive modeling_).
-
-## Approche 
+. . .
 
 
 
 $$F\left(\mathbf{x}\right) = \sum_{m=1}^M \beta_m f\left(\mathbf{x}, \mathbf{\theta}_m\right)$$
 
-Modélisation additive linéaire (_forward stagewise additive modeling_)
+## Boosting
 
-
-Modélisation additive linéaire (_forward stagewise additive modeling_)
-
-
+![Boosting](production_figures_files/figure-pdf/boosting.png)
 
 
 ## _Gradient boosted regression trees_ (GBRT)
