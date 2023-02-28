@@ -296,11 +296,11 @@ A écrire
 :::
 
 
-# La _gradient boosting machine_
+# Les approches de _boosting_
 
 ## Estimation d'une fonction inconnue
 
-L'objectif général des algorithmes d'apprentissage supervisé (_supervised learning_) est d'[__approximer une fonction inconnue__]{.orange} $F: \mathbf{x} \mapsto y$ en minimisant l'espérance conditionnelle d'une fonction de perte $L\left(y, F\left(\mathbf{x}\right)\right)$ sur un ensemble d'entraînement $\left(y_i, \mathbf{x_i} \right)_{i= 1,\dots,n}$. Formellement:
+L'objectif de l'apprentissage supervisé est d'[__approximer une fonction inconnue__]{.orange} $F: \mathbf{x} \mapsto y$ en minimisant l'espérance conditionnelle d'une fonction de perte $L\left(y, F\left(\mathbf{x}\right)\right)$ sur un ensemble d'entraînement $\left(y_i, \mathbf{x_i} \right)_{i= 1,\dots,n}$. Formellement:
 
 $$\hat{F} = \argmin_F \mathbb{E}_{y,\mathbf{x}}\left[ L\left(y, F\left(\mathbf{x}\right)\right)\right] $$
 
@@ -308,24 +308,66 @@ $$\hat{F} = \argmin_F \mathbb{E}_{y,\mathbf{x}}\left[ L\left(y, F\left(\mathbf{x
 
 C'est un problème compliqué car on cherche la fonction $F$ parmi l'ensemble des fonctions possibles!
 
-## Estimation d'un modèle paramétrique
+## Estimation paramétrique
 
-Une restriction fréquente consiste à rechercher $F\left(\mathbf{x}\right)$ dans un ensemble de fonctions paramétrisées par un vecteur fini de paramètres $\theta$. <br/>
-Exemple: $F\left(\mathbf{x}\right) = \mathbf{x\beta}$ avec $\mathbf{\beta} = \{\beta_1, \dots, \beta_d\}$
+- Principe: rechercher $F\left(\mathbf{x}\right)$ dans un ensemble de fonctions paramétrisées par un vecteur fini de paramètres $\theta$. <br/>
+[Exemple: $F\left(\mathbf{x}\right) = \mathbf{x\beta}$ avec $\mathbf{\beta} = \{\beta_1, \dots, \beta_d\}$]{.small90}
 
 . . .
 
-Cette restriction permet de se ramener à un problème d'optimisation sur l'espace des paramètres: $\hat{F}$ est caractérisée par ses paramètres $\hat{\bf\beta}$ tel que
+- Cette restriction permet de se ramener à un problème d'optimisation sur l'espace des paramètres (plus simple à résoudre): $\hat{F}$ est caractérisée par ses paramètres $\hat{\bf\theta}$ tels que
 
-$$\hat{\bf\theta} = \argmin_{\bf\theta} \mathbb{E}_{y,\mathbf{x}}\left[ Obj\left(\mathbf{\theta}, y, \mathbf{x} \right)\right]$$
+$$\hat{\bf\theta} = \argmin_{\bf\theta} \mathbb{E}_{y,\mathbf{x}}\left[ L\left(y, F\left(\mathbf{x}, \mathbf{\theta}\right)\right)\right]$$
+## Les approches ensemblistes
+
+- Principe: créer un modèle très précis (_strong learner_) en combinant un grand nombre de modèles simples (_base learners_ ou _weak learners_).
+
+. . .
+
+- Les méthodes ensemblistes sont diversifiées:
+  
+  - La nature du _base learner_;
+  - La méthode pour combiner les _base learners_ (moyenne, vote majoritaire...);
+  - La méthode d'entraînement du modèle.
+
+. . .
+
+- Ces approches reposent sur un __fondement théorique précis__ (@shapire1990strength).
+
+## Les approches ensemblistes
+
+
+- Trois grandes approches ensemblistes:
+
+  - _Bagging_ (@breiman1996bagging): chaque modèle est entraîné sur un échantillon aléatoire d'observations;
+  - _Random forest_ (@breiman2001random): chaque modèle est entraîné sur un échantillon aléatoire d'observations et de variables;
+  - _Boosting_: chaque modèle essaie de corriger les modèle erreurs du précédent.
+  
 
 
 
-$$$$
+## Les approches de _boosting_
+
+Les approches de _boosting_ sont complètement différentes, et combinent deux caractéristiques:
+
+- Une [__approche ensembliste__]{.orange} (_ensemble method_);
+- Une [__modélisation additive linéaire__]{.orange} (_forward stagewise additive modeling_).
+
+## Approche 
 
 
 
-# _Gradient boosted regression trees_ (GBRT)
+$$F\left(\mathbf{x}\right) = \sum_{m=1}^M \beta_m f\left(\mathbf{x}, \mathbf{\theta}_m\right)$$
+
+Modélisation additive linéaire (_forward stagewise additive modeling_)
+
+
+Modélisation additive linéaire (_forward stagewise additive modeling_)
+
+
+
+
+## _Gradient boosted regression trees_ (GBRT)
 
 
 
