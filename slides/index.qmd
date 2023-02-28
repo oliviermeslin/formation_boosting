@@ -177,24 +177,18 @@ Ex: prédire la catégorie NAF d'un emploi à partir de sa description.
 
 ## Trois notions essentielles
 
-Une approche d'apprentissage supervisé comprend toujours trois éléments:
-
 ::: {.small90}
 
-- Un [__modèle__]{.orange} $F$ qui relie $y$ et $\mathbf{x}$ et $y = F\left(\mathbf{x}, \mathbf{\Theta}\right)$;<br/> 
-Exemple: $y = \mathbf{x} \beta$
+Une approche d'apprentissage supervisé comprend trois éléments:
 
-- Des [__paramètres__]{.orange} $\Theta = \{w_j\}_{j=1,\dots,d}$ qui doivent être estimés à partir des données; <br/> 
-Exemple: $\beta$ dans $y = \mathbf{x} \beta$
+- Un [__modèle__]{.orange} $F$ qui relie $y$ et $\mathbf{x}$ et $y = F\left(\mathbf{x}, \mathbf{\Theta}\right)$;<br/> 
+Exemple: $y = \mathbf{x} \mathbf{\beta}$
+
+- Des [__paramètres__]{.orange} $\mathbf{\Theta} = \{w_j\}_{j=1,\dots,d}$ qui doivent être estimés à partir des données; <br/> 
+Exemple: $\mathbf{\beta}$ dans $y = \mathbf{x} \mathbf{\beta}$
 
 - Une [__fonction objectif__]{.orange} $Obj(\mathbf{\Theta}, y, \mathbf{x})$ avec une [fonction de perte]{.orange} et un [terme de régularisation]{.orange}.<br/>
 :::
-
-. . .
-
-Petits abus de notation: 
-- on écrit $F\left(\mathbf{x}\right)$ au lieu de $F\left(\mathbf{x}, \mathbf{\Theta}\right)$;
-- on écrit $Obj\left(\Theta\right)$ au lieu de $Obj\left(\Theta, y, \mathbf{x}\right)$;
 
 ## Fonction objectif
 
@@ -206,8 +200,15 @@ La fonction objectif rassemble deux fonctions:
 - La [__fonction de régularisation__]{.orange} $\Omega$ mesure la complexité du modèle.
 :::
 
-$$Obj\left(\Theta, y, \mathbf{x}\right) = \underbrace{L\left(\Theta, y, \mathbf{x}\right)}_{\substack{\bf\text{Fonction} \\ \bf\text{de perte}}} + \underbrace{\Omega\left(\Theta\right)}_{\substack{\bf\text{Fonction de} \\ \bf\text{régularisation}}}$$
+$$Obj\left(\mathbf{\Theta}, y, \mathbf{x}\right) = \underbrace{L\left(\mathbf{\Theta}, y, \mathbf{x}\right)}_{\substack{\bf\text{Fonction} \\ \bf\text{de perte}}} + \underbrace{\Omega\left(\mathbf{\Theta}\right)}_{\substack{\bf\text{Fonction de} \\ \bf\text{régularisation}}}$$
 
+. . .
+
+::: {.small80}
+
+Petits abus de notation: on écrit $F\left(\mathbf{x}\right)$ au lieu de $F\left(\mathbf{x}, \mathbf{\Theta}\right)$, $Obj\left(\mathbf{\Theta}\right)$ au lieu de $Obj\left(\mathbf{\Theta}, y, \mathbf{x}\right)$, et $L\left(y, \mathbf{x}\right)$ au lieu de $L\left(\mathbf{\Theta}, y, \mathbf{x}\right)$
+
+:::
 
 ## Fonction de perte
 
@@ -228,9 +229,7 @@ $$Obj\left(\Theta, y, \mathbf{x}\right) = \underbrace{L\left(\Theta, y, \mathbf{
 
 ## Fonction de régularisation
 
-- La [__fonction de régularisation__]{.orange} $\Omega$ mesure la complexité du modèle. Elle croît avec cette complexité:
-  - Nombre de paramètres;
-  - Valeur absolue des paramètres.
+- La [__fonction de régularisation__]{.orange} $\Omega$ mesure la complexité du modèle. Elle est strictement croissante avec des mesures de cette complexité (nombre de paramètres, valeur absolue des paramètres...).
 
 . . .
 
@@ -247,51 +246,51 @@ La procédure statistique qui utilise la [__fonction objectif__]{.orange} pour c
 
 . . .
 
-À partir d'un jeu de données $\left(y_i, \mathbf{x_i} \right)_{i= 1,\dots,n}$, on obtient l'approximation $\hat{F}$ en [minimisant l'espérance conditionnelle]{.orange} de la fonction bjectif $Obj$.
+À partir d'un jeu de données $\left(y_i, \mathbf{x_i} \right)_{i= 1,\dots,n}$, on obtient l'approximation $\hat{F}$ en [minimisant l'espérance conditionnelle]{.orange} de la fonction objectif $Obj$ par rapport aux paramètres $\bf\Theta$. $\hat{F}$ est caractérisé par $\hat{\bf\Theta}$ tel que:
 
-$$\hat{F} = \argmin_F \mathbb{E}_{y,\mathbf{x}}\left[ Obj\left(y, F\left(\mathbf{x}\right)\right)\right] $$
+$$\hat{\bf\Theta} = \argmin_{\bf\Theta} \mathbb{E}_{y,\mathbf{x}}\left[ Obj\left(\mathbf{\Theta}, y, \mathbf{x} \right)\right]$$
 
-. . .
+## Entraînement d'un modèle: exemple
 
-Exemple: On modélise une variable continue avec:
+On modélise une variable continue avec:
 
-- un modèle linéaire: $F\left(\mathbf{x}\right) = \mathbf{x} \beta$; 
+- un modèle linéaire: $F\left(\mathbf{x}\right) = \mathbf{x} \mathbf{\beta}$; 
 - une fonction de perte quadratique: $L\left(y, F\left(\mathbf{x}\right)\right) =  \left(y - F\left(\mathbf{x}\right)\right)^2$;
 - pas de fonction de régularisation.
 
-La solution $\hat{F}$ est caractérisée par $\beta$ tel que:
+La fonction $\hat{F}$ est caractérisée par $\mathbf{\beta}$ tel que:
 
-$$\hat{\beta} = \argmin_\beta \sum_{i} \left(y_i - \mathbf{x_i}\beta\right)^2$$
+$$\hat{\mathbf{\beta}} = \argmin_\mathbf{\beta} \sum_{i} \left(y_i - \mathbf{x_i}\mathbf{\beta}\right)^2$$
 
 . . .
 
 __On retombe sur les OLS!__
 
-## Quelques notations
+## La notion d'_overfitting_
 
-::: {.small80}
+## Données d'entraînement et données de test
+
+
+## Quelques définitions
+
+::: {.small60}
 
 | Notation   | Définition                           | Machine learning | Économétrie            |
 |:--:|------|----|----|
 | $y$        | Ce qu'on veut modéliser              | _Target_, _outcome_| Variable dépendante |
 |$\mathbf{x}$| Les variables utilisées pour prédire | _Features_         | Variables indépendantes| 
 | $\left(y_i, \mathbf{x_i} \right)_{i= 1,\dots,n}$ | Les données dont on dispose | _Instances_ | Observations | 
-| $w$ | Les paramètres du modèle | _Weights_| Paramètres ($\beta$)|
-|| Procédure de calcul des paramètres du modèle | _Training_ | Estimation |
-|| Données utilisées pour l'entraînement du modèle | _Training set_ |  |
-|| Données utilisées pour l'évaluation du modèle | _Test set_ |  |
+| $w$ | Les paramètres du modèle | _Weights_| Paramètres ($\mathbf{\beta}$)|
+|| Procédure de calcul des paramètres du modèle | _Training_, entraînement | Estimation |
+|| Le fait que le modèle est _trop_ performant sur les données d'entraînement| _Overfitting_, surapprentissage| Pas de terme [(c'est bien le problème!)]{.small50}|
+|| Données utilisées pour l'entraînement du modèle | _Training set_, données d'entraînement |  |
+|| Données utilisées pour l'évaluation du modèle | _Test set_, données de test |  |
 
 : {tbl-colwidths="[15,50,35,30]"}
 
 :::
 
 
-
-## Entraînement
-
-Définition de l'entraînement.
-
-Train/test/validation
 
 
 ## _Gradient boosted regression trees_ (GBRT)
