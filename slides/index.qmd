@@ -181,13 +181,13 @@ Ex: prédire la catégorie NAF d'un emploi à partir de sa description.
 
 Une approche d'apprentissage supervisé comprend trois éléments:
 
-- Un [__modèle__]{.orange} $F$ qui relie $y$ et $\mathbf{x}$ et $y = F\left(\mathbf{x}, \mathbf{\Theta}\right)$;<br/> 
+- Un [__modèle__]{.orange} $F$ qui relie $y$ et $\mathbf{x}$ et $y = F\left(\mathbf{x}, \mathbf{\theta}\right)$;<br/> 
 Exemple: $y = \mathbf{x} \mathbf{\beta}$
 
-- Des [__paramètres__]{.orange} $\mathbf{\Theta} = \{w_j\}_{j=1,\dots,d}$ qui doivent être estimés à partir des données; <br/> 
+- Des [__paramètres__]{.orange} $\mathbf{\theta} = \{w_j\}_{j=1,\dots,d}$ qui doivent être estimés à partir des données; <br/> 
 Exemple: $\mathbf{\beta}$ dans $y = \mathbf{x} \mathbf{\beta}$
 
-- Une [__fonction objectif__]{.orange} $Obj(\mathbf{\Theta}, y, \mathbf{x})$ avec une [fonction de perte]{.orange} et un [terme de régularisation]{.orange}.<br/>
+- Une [__fonction objectif__]{.orange} $Obj(\mathbf{\theta}, y, \mathbf{x})$ avec une [fonction de perte]{.orange} et un [terme de régularisation]{.orange}.<br/>
 :::
 
 ## Fonction objectif
@@ -200,13 +200,13 @@ La fonction objectif rassemble deux fonctions:
 - La [__fonction de régularisation__]{.orange} $\Omega$ mesure la complexité du modèle.
 :::
 
-$$Obj\left(\mathbf{\Theta}, y, \mathbf{x}\right) = \underbrace{L\left(\mathbf{\Theta}, y, \mathbf{x}\right)}_{\substack{\bf\text{Fonction} \\ \bf\text{de perte}}} + \underbrace{\Omega\left(\mathbf{\Theta}\right)}_{\substack{\bf\text{Fonction de} \\ \bf\text{régularisation}}}$$
+$$Obj\left(\mathbf{\theta}, y, \mathbf{x}\right) = \underbrace{L\left(\mathbf{\theta}, y, \mathbf{x}\right)}_{\substack{\bf\text{Fonction} \\ \bf\text{de perte}}} + \underbrace{\Omega\left(\mathbf{\theta}\right)}_{\substack{\bf\text{Fonction de} \\ \bf\text{régularisation}}}$$
 
 . . .
 
 ::: {.small80}
 
-Petits abus de notation: on écrit $F\left(\mathbf{x}\right)$ au lieu de $F\left(\mathbf{x}, \mathbf{\Theta}\right)$, $Obj\left(\mathbf{\Theta}\right)$ au lieu de $Obj\left(\mathbf{\Theta}, y, \mathbf{x}\right)$, et $L\left(y, \mathbf{x}\right)$ au lieu de $L\left(\mathbf{\Theta}, y, \mathbf{x}\right)$
+Petits abus de notation: on écrit $F\left(\mathbf{x}\right)$ au lieu de $F\left(\mathbf{x}, \mathbf{\theta}\right)$, $Obj\left(\mathbf{\theta}\right)$ au lieu de $Obj\left(\mathbf{\theta}, y, \mathbf{x}\right)$, et $L\left(y, \mathbf{x}\right)$ au lieu de $L\left(\mathbf{\theta}, y, \mathbf{x}\right)$
 
 :::
 
@@ -246,9 +246,9 @@ La procédure statistique qui utilise la [__fonction objectif__]{.orange} pour c
 
 . . .
 
-À partir d'un jeu de données $\left(y_i, \mathbf{x_i} \right)_{i= 1,\dots,n}$, on obtient l'approximation $\hat{F}$ en [minimisant l'espérance conditionnelle]{.orange} de la fonction objectif $Obj$ par rapport aux paramètres $\bf\Theta$. $\hat{F}$ est caractérisé par $\hat{\bf\Theta}$ tel que:
+À partir d'un jeu de données $\left(y_i, \mathbf{x_i} \right)_{i= 1,\dots,n}$, on obtient l'approximation $\hat{F}$ en [minimisant l'espérance conditionnelle]{.orange} de la fonction objectif $Obj$ par rapport aux paramètres $\bf\theta$. $\hat{F}$ est caractérisé par $\hat{\bf\theta}$ tel que:
 
-$$\hat{\bf\Theta} = \argmin_{\bf\Theta} \mathbb{E}_{y,\mathbf{x}}\left[ Obj\left(\mathbf{\Theta}, y, \mathbf{x} \right)\right]$$
+$$\hat{\bf\theta} = \argmin_{\bf\theta} \mathbb{E}_{y,\mathbf{x}}\left[ Obj\left(\mathbf{\theta}, y, \mathbf{x} \right)\right]$$
 
 ## Entraînement d'un modèle: exemple
 
@@ -268,8 +268,13 @@ __On retombe sur les OLS!__
 
 ## La notion d'_overfitting_
 
+
+A écrire
+
+
 ## Données d'entraînement et données de test
 
+A écrire
 
 ## Quelques définitions
 
@@ -291,15 +296,38 @@ __On retombe sur les OLS!__
 :::
 
 
+# La _gradient boosting machine_
+
+## Estimation d'une fonction inconnue
+
+L'objectif général des algorithmes d'apprentissage supervisé (_supervised learning_) est d'[__approximer une fonction inconnue__]{.orange} $F: \mathbf{x} \mapsto y$ en minimisant l'espérance conditionnelle d'une fonction de perte $L\left(y, F\left(\mathbf{x}\right)\right)$ sur un ensemble d'entraînement $\left(y_i, \mathbf{x_i} \right)_{i= 1,\dots,n}$. Formellement:
+
+$$\hat{F} = \argmin_F \mathbb{E}_{y,\mathbf{x}}\left[ L\left(y, F\left(\mathbf{x}\right)\right)\right] $$
+
+. . .
+
+C'est un problème compliqué car on cherche la fonction $F$ parmi l'ensemble des fonctions possibles!
+
+## Estimation d'un modèle paramétrique
+
+Une restriction fréquente consiste à rechercher $F\left(\mathbf{x}\right)$ dans un ensemble de fonctions paramétrisées par un vecteur fini de paramètres $\theta$. <br/>
+Exemple: $F\left(\mathbf{x}\right) = \mathbf{x\beta}$ avec $\mathbf{\beta} = \{\beta_1, \dots, \beta_d\}$
+
+. . .
+
+Cette restriction permet de se ramener à un problème d'optimisation sur l'espace des paramètres: $\hat{F}$ est caractérisée par ses paramètres $\hat{\bf\beta}$ tel que
+
+$$\hat{\bf\theta} = \argmin_{\bf\theta} \mathbb{E}_{y,\mathbf{x}}\left[ Obj\left(\mathbf{\theta}, y, \mathbf{x} \right)\right]$$
 
 
-## _Gradient boosted regression trees_ (GBRT)
+
+$$$$
 
 
 
-Beaucoup d'algorithmes
+# _Gradient boosted regression trees_ (GBRT)
 
-optimiser sur l'espace des paramètres.
+
 
 
 
