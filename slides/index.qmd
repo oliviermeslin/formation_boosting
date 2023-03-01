@@ -451,3 +451,8 @@ $Gain = \frac{1}{2} \left[\frac{G_L^2}{H_L+\lambda}+\frac{G_R^2}{H_R+\lambda}-\f
 ## Boosting
 
 ![Boosting](production_figures_files/figure-pdf/boosting.png)
+
+## Références
+
+::: {#refs}
+:::
