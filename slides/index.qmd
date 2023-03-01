@@ -332,7 +332,7 @@ C'est un problème compliqué car on cherche la fonction $F$ parmi l'ensemble de
 
 :::: {.incremental}
 
-- Principe: créer un modèle très précis (_strong learner_) en combinant un grand nombre de modèles simples (_base learners_ ou _weak learners_).
+- Principe: créer un modèle très précis (_strong learner_) en combinant un grand nombre de modèles simples comprenant un nombre restreint de paramètres (_base learners_ ou _weak learners_).
 
 - Les méthodes ensemblistes sont diversifiées:
   
@@ -340,7 +340,7 @@ C'est un problème compliqué car on cherche la fonction $F$ parmi l'ensemble de
   - Méthode pour combiner les _base learners_ (moyenne, vote majoritaire...);
   - Méthode d'entraînement du modèle.
 
-- Exemple: $$F\left(\mathbf{x}\right) = \sum_{m=1}^M \beta_m f\left(\mathbf{x}, \mathbf{\theta}_m\right)$$
+- Exemple: $$F\left(\mathbf{x}\right) = \frac{1}{M} \sum_{m=1}^M \beta_m f\left(\mathbf{x}, \mathbf{\theta}_m\right)$$
 
 ::::
 
@@ -349,16 +349,22 @@ C'est un problème compliqué car on cherche la fonction $F$ parmi l'ensemble de
 
 ## Les approches ensemblistes
 
-$\hat{F}$ est caractérisée par les paramètres $\{\beta_m, \mathbf{\theta}_m\}_{m=1}^{M}$ tels que
+::: {.small90}
 
-$$ \argmin_{\{\beta_m, \mathbf{\theta}_m\}_{m=1}^{M}} \sum_{i=1}^N L\left(y_i, \sum_{m=1}^M \beta_m f\left(\mathbf{x}_i, \mathbf{\theta}_m\right)\right)$$
+:::: {.incremental}
 
+- $\hat{F}$ est caractérisée par les paramètres $\{\beta_m, \mathbf{\theta}_m\}_{m=1}^{M}$ tels que [$$\argmin_{\{\beta_m, \mathbf{\theta}_m\}_{m=1}^{M}} \sum_{i=1}^N L\left(y_i, \sum_{m=1}^M \beta_m f\left(\mathbf{x}_i, \mathbf{\theta}_m\right)\right)$$]{.small90}
 
 - Trois grandes approches ensemblistes:
 
-  - _Bagging_ (@breiman1996bagging): chaque modèle est entraîné séparément sur un échantillon aléatoire d'observations;
-  - _Random forest_ (@breiman2001random): chaque modèle est entraîné séparément sur un échantillon aléatoire d'observations et de variables;
-  - _Boosting_ (@shapire1990strength): chaque modèle essaie de corriger les modèle erreurs du précédent.
+  - _Bagging_ (@breiman1996bagging): chaque modèle est entraîné __séparément__ sur un échantillon aléatoire d'observations;
+  - _Random forest_ (@breiman2001random): chaque modèle est entraîné __séparément__ sur un échantillon aléatoire d'observations et de variables;
+  - _Boosting_ (@shapire1990strength, @freund1997decision): les modèles sont entraînés __séquentiellement__, chaque modèle essayant de corriger les modèle erreurs du précédent.
+
+
+::::
+
+:::
 
 <!-- . . . -->
 
@@ -371,17 +377,31 @@ $$ \argmin_{\{\beta_m, \mathbf{\theta}_m\}_{m=1}^{M}} \sum_{i=1}^N L\left(y_i, \
 
 ## Le _boosting_
 
-Le _boosting_ combine une [__approche ensembliste__]{.orange} avec une [__modélisation additive par étapes__]{.orange} (_forward stagewise additive modeling_).
+::: {.small90}
 
-. . .
+:::: {.incremental}
 
-
+- Le _boosting_ combine une [__approche ensembliste__]{.orange} avec une [__modélisation additive par étapes__]{.orange} (_forward stagewise additive modeling_).
 
 $$F\left(\mathbf{x}\right) = \sum_{m=1}^M \beta_m f\left(\mathbf{x}, \mathbf{\theta}_m\right)$$
+
+
+::::
+
+:::
 
 ## Boosting
 
 ![Boosting](production_figures_files/figure-pdf/boosting.png)
+
+
+
+## Résumé
+
+- Une approche ensembliste;<br/> $\Rightarrow$ Beaucoup de petits modèles plutôt qu'un gros modèle.
+- Un modélisation additive par étapes;<br/> $\Rightarrow$ On entraîne les modèles séquentiellement.
+- Utilisation du gradient.
+- Utilisation des arbres de régression comme _base learner_.
 
 
 ## _Gradient boosted regression trees_ (GBRT)
@@ -456,3 +476,4 @@ $Gain = \frac{1}{2} \left[\frac{G_L^2}{H_L+\lambda}+\frac{G_R^2}{H_R+\lambda}-\f
 
 ::: {#refs}
 :::
+
