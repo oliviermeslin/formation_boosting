@@ -474,6 +474,10 @@ $Gain = \frac{1}{2} \left[\frac{G_L^2}{H_L+\lambda}+\frac{G_R^2}{H_R+\lambda}-\f
 
 ## Références
 
-::: {#refs}
+::: {.small80}
+
+:::: {#refs}
+::::
+
 :::
 
