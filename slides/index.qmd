@@ -28,6 +28,8 @@ format:
 css: custom.css
 from: markdown+emoji
 bibliography: references.bib
+nocite: |
+  @*
 ---
 
 ## Plan
