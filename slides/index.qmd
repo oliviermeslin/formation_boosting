@@ -30,12 +30,16 @@ from: markdown+emoji
 bibliography: references.bib
 nocite: |
   @*
+editor: 
+  markdown: 
+    wrap: 72
 ---
 
 ## Plan
 
 <!-- Des macros pour Mathjax -->
-::: {.hidden}
+
+::: hidden
 $$
   \DeclareMathOperator*{\argmin}{arg\,min}
 \makeatletter
@@ -48,29 +52,36 @@ $$
 $$
 :::
 
-- Un peu d'histoire
-- Présentation intuitive  des algorithmes de RF et de boosting:
-    - Les arbres de décision;
-    - Les algorithmes de RF et de boosting avec les figures;
-    - Faire rapidement la liste des hyperparamètres, en faisant des groupes cohérents (arbre unitaire, ensemble, training);
-- Comment entraîne-t-on un modèle de ML?
+-   Un peu d'histoire
 
+-   Présentation intuitive des algorithmes de RF et de boosting:
 
+    -   Les arbres de décision;
+    -   Les algorithmes de RF et de boosting avec les figures;
+    -   Faire rapidement la liste des hyperparamètres, en faisant des
+        groupes cohérents (arbre unitaire, ensemble, training);
 
-- Les sujets avancés:
-    - Changer la fonction de perte;
-    - Changer la métrique d'évaluation;
+-   Comment entraîne-t-on un modèle de ML?
 
-- Illustration
-- 
-- Faire Rapidement la liste des hyperparamètres, en faisant des groupes cohérents (arbre unitaire, ensemble, training);
-- 
+-   Les sujets avancés:
 
-- 
-- Les hyperparamètres
+    -   Changer la fonction de perte;
+    -   Changer la métrique d'évaluation;
 
-- Les sujets avancés
+-   Illustration
 
+-   
+
+-   Faire Rapidement la liste des hyperparamètres, en faisant des
+    groupes cohérents (arbre unitaire, ensemble, training);
+
+-   
+
+-   
+
+-   Les hyperparamètres
+
+-   Les sujets avancés
 
 # Introduction
 
@@ -99,62 +110,91 @@ list.files(path = "/home/onyxia/work/formation_boosting/slides/production_figure
 ## Un peu d'histoire
 
 <!-- Thoughts on Hypothesis Boosting, https://www.cis.upenn.edu/~mkearns/papers/boostnote.pdf -->
-<!-- Robert E. Schapire, The Strength of Weak Learnability -->
-<!-- https://maxhalford.github.io/blog/lightgbm-focal-loss/ -->
-<!-- https://web.njit.edu/~usman/courses/cs675_fall16/BoostedTree.pdf -->
-<!-- https://neptune.ai/blog/lightgbm-parameters-guide -->
 
+<!-- Robert E. Schapire, The Strength of Weak Learnability -->
+
+<!-- https://maxhalford.github.io/blog/lightgbm-focal-loss/ -->
+
+<!-- https://web.njit.edu/~usman/courses/cs675_fall16/BoostedTree.pdf -->
+
+<!-- https://neptune.ai/blog/lightgbm-parameters-guide -->
 
 ## Des éléments sur `lightGBM`
 
-- une présentation intéressante du GB: https://jmarkhou.com/lgbqr/
-- Comment lightGBM choisit le poids de chaque feuille terminale: https://stackoverflow.com/questions/60137453/how-does-lightgbm-or-other-boosted-trees-implementations-with-2nd-order-approxi
+-   une présentation intéressante du GB: https://jmarkhou.com/lgbqr/
+-   Comment lightGBM choisit le poids de chaque feuille terminale:
+    https://stackoverflow.com/questions/60137453/how-does-lightgbm-or-other-boosted-trees-implementations-with-2nd-order-approxi
 
 ## Plan
 
-- Présenter les arbres de régression et de classification. Les notions importantes: splits, noeuds terminaux, partition des données, valeurs, prédictions, profondeur, nombre de feuilles.
-- Parler rapidement des résultats sur les _weak learners_ et _strong learners_; Shapire 1990. Principe du _hypothesis boosting_. - AdaBoost est un exemple de boosting qui n'est pas du _gradient boosting_.
-- Parler de la GBM, Friedman 2001. _Forward stagewise additive modelling_ (modélisation additive itérative). Centrer la présentation sur l'idée du _gradient boosting_.
-- Dire que plusieurs implémentations des approches de _gradient boosting_ sont envisageables: XGBoost, LightGBM, CatBoost.
+-   Présenter les arbres de régression et de classification. Les notions
+    importantes: splits, noeuds terminaux, partition des données,
+    valeurs, prédictions, profondeur, nombre de feuilles.
 
-- Les composantes des modèles de _gradient boosting_:
-    - Sur le modèle additif lui-même: nombre d'arbres et _learning rate_;
-    - Sur la construction des arbres eux-mêmes: 
-        - Paramètres de l'arbre: nombre de feuilles et profondeur, `min_child_weight`;
-        - Mode de recherche des splits: `tree_method` (hist, exact, approx), `max_bins`:
-        - Données utilisées pour la recherche des splits: _subsample_;
-        - Régularisation (signification de chaque hyperparamètre: lambda, alpha, gamma, gain minimum).
-    - Sur les fonctions de perte:
-        - Expliquer qu'il faut fournir simplement l(), g() et h().
-        - Donner des exemples: perte plus exponentielle que la perte quadratique.
-        - Expliquer que le modèle final est indépendant de la fonction de perte utilisée pour entraîner le modèle.
+-   Parler rapidement des résultats sur les *weak learners* et *strong
+    learners*; Shapire 1990. Principe du *hypothesis boosting*. -
+    AdaBoost est un exemple de boosting qui n'est pas du *gradient
+    boosting*.
 
-- Extensions:
-    - Raffiner les fonctions de perte;
-    - Traiter les variables catégorielles;
-    - Les pondérations: `scale_pos_weight` et `sample_weight`;
-    - Utiliser un _warm start_: `base_margin`.
+-   Parler de la GBM, Friedman 2001. *Forward stagewise additive
+    modelling* (modélisation additive itérative). Centrer la
+    présentation sur l'idée du *gradient boosting*.
+
+-   Dire que plusieurs implémentations des approches de *gradient
+    boosting* sont envisageables: XGBoost, LightGBM, CatBoost.
+
+-   Les composantes des modèles de *gradient boosting*:
+
+    -   Sur le modèle additif lui-même: nombre d'arbres et *learning
+        rate*;
+    -   Sur la construction des arbres eux-mêmes:
+        -   Paramètres de l'arbre: nombre de feuilles et profondeur,
+            `min_child_weight`;
+        -   Mode de recherche des splits: `tree_method` (hist, exact,
+            approx), `max_bins`:
+        -   Données utilisées pour la recherche des splits: *subsample*;
+        -   Régularisation (signification de chaque hyperparamètre:
+            lambda, alpha, gamma, gain minimum).
+    -   Sur les fonctions de perte:
+        -   Expliquer qu'il faut fournir simplement l(), g() et h().
+        -   Donner des exemples: perte plus exponentielle que la perte
+            quadratique.
+        -   Expliquer que le modèle final est indépendant de la fonction
+            de perte utilisée pour entraîner le modèle.
+
+-   Extensions:
+
+    -   Raffiner les fonctions de perte;
+    -   Traiter les variables catégorielles;
+    -   Les pondérations: `scale_pos_weight` et `sample_weight`;
+    -   Utiliser un *warm start*: `base_margin`.
 
 ## La notion de bonnes pratiques
 
-- [**Origine**]{.blue2} : communauté des développeurs logiciels
+-   [**Origine**]{.blue2} : communauté des développeurs logiciels
 
-::: {.incremental}
-- [**Constats**]{.blue2} :
-    - le [_"code est plus souvent lu qu'écrit"_]{.green2} ([Guido Van Rossum](https://fr.wikipedia.org/wiki/Guido_van_Rossum))
-    - la maintenance d'un code est très coûteuse
+::: incremental
+-   [**Constats**]{.blue2} :
+    -   le [*"code est plus souvent lu qu'écrit"*]{.green2} ([Guido Van
+        Rossum](https://fr.wikipedia.org/wiki/Guido_van_Rossum))
+    -   la maintenance d'un code est très coûteuse
 :::
 
 . . .
 
-- [**Conséquence**]{.blue2} : un ensemble de [**règles informelles**]{.orange},
-conventionnellement acceptées comme produisant des logiciels [**fiables**]{.orange}, [**évolutifs**]{.orange} et [**maintenables**]{.orange}
+-   [**Conséquence**]{.blue2} : un ensemble de [**règles
+    informelles**]{.orange}, conventionnellement acceptées comme
+    produisant des logiciels [**fiables**]{.orange},
+    [**évolutifs**]{.orange} et [**maintenables**]{.orange}
 
 # Généralités sur l'apprentissage supervisé
 
 ## Introduction
 
-L'objectif général des algorithmes d'apprentissage supervisé (_supervised learning_) est d'[__approximer une fonction__]{.orange} $F$ qui prédit une variable $y$ à partir d'un ensemble de variables $\mathbf{x}$. On obtient une fonction $\hat{F}$:
+L'objectif général des algorithmes d'apprentissage supervisé
+(*supervised learning*) est d'[**approximer une fonction**]{.orange} $F$
+qui prédit une variable $y$ à partir d'un ensemble de variables
+$\mathbf{x}$. On obtient une fonction $\hat{F}$:
 
 $$\hat{y} = \hat{F} \left(\mathbf{x} \right)$$
 
@@ -162,93 +202,122 @@ $$\hat{y} = \hat{F} \left(\mathbf{x} \right)$$
 
 Les algorithmes peuvent avoir des objectifs différents:
 
-::: {.small80}
-:::: {.incremental}
+::: small80
+::: incremental
+-   [**Régression**]{.blue2}: Prédire une variable **continue**. <br/>
+    Ex: prédire le prix d'un logement à partir de ses caractéristiques.
 
-- [__Régression__]{.blue2}: Prédire une variable __continue__. <br/>
-Ex: prédire le prix d'un logement à partir de ses caractéristiques.
-    
-- [__Classification binaire__]{.blue2}: Prédire une variable __dichotomique__. <br/>
-Ex: prédire si un individu est présent sur le territoire national.
-    
-- [__Classification multiclasse__]{.blue2}: Prédire une variable __dans un ensemble fini__. <br/>
-Ex: prédire la catégorie NAF d'un emploi à partir de sa description.
-   
-::::
+-   [**Classification binaire**]{.blue2}: Prédire une variable
+    **dichotomique**. <br/> Ex: prédire si un individu est présent sur
+    le territoire national.
+
+-   [**Classification multiclasse**]{.blue2}: Prédire une variable
+    **dans un ensemble fini**. <br/> Ex: prédire la catégorie NAF d'un
+    emploi à partir de sa description.
+:::
 :::
 
 ## Trois notions essentielles
 
-::: {.small90}
-
+::: small90
 Une approche d'apprentissage supervisé comprend trois éléments:
 
-- Un [__modèle__]{.orange} $F$ qui relie $y$ et $\mathbf{x}$ et $y = F\left(\mathbf{x}, \mathbf{\theta}\right)$;<br/> 
-Exemple: $y = \mathbf{x} \mathbf{\beta}$
+-   Un [**modèle**]{.orange} $F$ qui relie $y$ et $\mathbf{x}$ et
+    $y = F\left(\mathbf{x}, \mathbf{\theta}\right)$;<br/> Exemple:
+    $y = \mathbf{x} \mathbf{\beta}$
 
-- Des [__paramètres__]{.orange} $\mathbf{\theta} = \{w_j\}_{j=1,\dots,d}$ qui doivent être estimés à partir des données; <br/> 
-Exemple: $\mathbf{\beta}$ dans $y = \mathbf{x} \mathbf{\beta}$
+-   Des [**paramètres**]{.orange}
+    $\mathbf{\theta} = \{w_j\}_{j=1,\dots,d}$ qui doivent être estimés à
+    partir des données; <br/> Exemple: $\mathbf{\beta}$ dans
+    $y = \mathbf{x} \mathbf{\beta}$
 
-- Une [__fonction objectif__]{.orange} $Obj(\mathbf{\theta}, y, \mathbf{x})$ avec une [fonction de perte]{.orange} et un [terme de régularisation]{.orange}.<br/>
+-   Une [**fonction objectif**]{.orange}
+    $Obj(\mathbf{\theta}, y, \mathbf{x})$ avec une [fonction de
+    perte]{.orange} et un [terme de régularisation]{.orange}.<br/>
 :::
 
 ## Fonction objectif
 
 La fonction objectif rassemble deux fonctions:
 
-::: {.small90}
-
-- La [__fonction de perte__]{.orange} $L$ mesure pour chaque observation la distance entre l'observé $y_i$ et la prédiction $F\left(\mathbf{x}_i \right)$;
-- La [__fonction de régularisation__]{.orange} $\Omega$ mesure la complexité du modèle.
+::: small90
+-   La [**fonction de perte**]{.orange} $L$ mesure pour chaque
+    observation la distance entre l'observé $y_i$ et la prédiction
+    $F\left(\mathbf{x}_i \right)$;
+-   La [**fonction de régularisation**]{.orange} $\Omega$ mesure la
+    complexité du modèle.
 :::
 
 $$Obj\left(\mathbf{\theta}, y, \mathbf{x}\right) = \underbrace{L\left(\mathbf{\theta}, y, \mathbf{x}\right)}_{\substack{\bf\text{Fonction} \\ \bf\text{de perte}}} + \underbrace{\Omega\left(\mathbf{\theta}\right)}_{\substack{\bf\text{Fonction de} \\ \bf\text{régularisation}}}$$
 
 . . .
 
-::: {.small80}
-
-Petits abus de notation: on écrit $F\left(\mathbf{x}\right)$ au lieu de $F\left(\mathbf{x}, \mathbf{\theta}\right)$, $Obj\left(\mathbf{\theta}\right)$ au lieu de $Obj\left(\mathbf{\theta}, y, \mathbf{x}\right)$, et $L\left(y, \mathbf{x}\right)$ au lieu de $L\left(\mathbf{\theta}, y, \mathbf{x}\right)$
-
+::: small80
+Petits abus de notation: on écrit $F\left(\mathbf{x}\right)$ au lieu de
+$F\left(\mathbf{x}, \mathbf{\theta}\right)$,
+$Obj\left(\mathbf{\theta}\right)$ au lieu de
+$Obj\left(\mathbf{\theta}, y, \mathbf{x}\right)$, et
+$L\left(y, \mathbf{x}\right)$ au lieu de
+$L\left(\mathbf{\theta}, y, \mathbf{x}\right)$
 :::
 
 ## Fonction de perte
 
-- La [__fonction de perte__]{.orange} $L$ mesure pour chaque observation la distance entre l'observé $y_i$ et la prédiction $F\left(\mathbf{x}_i \right)$;
+-   La [**fonction de perte**]{.orange} $L$ mesure pour chaque
+    observation la distance entre l'observé $y_i$ et la prédiction
+    $F\left(\mathbf{x}_i \right)$;
 
 . . .
 
-- Elle est habituellement convexe et dérivable deux fois.
+-   Elle est habituellement convexe et dérivable deux fois.
 
 . . .
 
-- Fonctions de perte classiques:
-  - La perte quadratique: $L\left(y, F\left(\mathbf{x}\right)\right) =  \left(y - F\left(\mathbf{x}\right)\right)^2$
-  - La perte absolue: $L\left(y, F\left(\mathbf{x}\right)\right) =  \left|y - F\left(\mathbf{x}\right)\right|$
-  - La perte logloss: $L\left(y, F\left(\mathbf{x}\right)\right) = - \left(y \log \left(p\left(\mathbf{x}\right)\right) + \left(1 - y \right) \log \left(1 - p\left(\mathbf{x}\right)\right)\right)$
-
-- Il est possible d'utiliser une fonction de perte plus originale.
+-   Fonctions de perte classiques:
+    -   La perte quadratique:
+        $L\left(y, F\left(\mathbf{x}\right)\right) = \left(y - F\left(\mathbf{x}\right)\right)^2$
+    -   La perte absolue:
+        $L\left(y, F\left(\mathbf{x}\right)\right) = \left|y - F\left(\mathbf{x}\right)\right|$
+    -   La perte logloss:
+        $L\left(y, F\left(\mathbf{x}\right)\right) = - \left(y \log \left(p\left(\mathbf{x}\right)\right) + \left(1 - y \right) \log \left(1 - p\left(\mathbf{x}\right)\right)\right)$
+-   Il est possible d'utiliser une fonction de perte plus originale.
 
 ## Fonction de régularisation
 
-- La [__fonction de régularisation__]{.orange} $\Omega$ mesure la complexité du modèle. Elle est strictement croissante avec des mesures de cette complexité (nombre de paramètres, valeur absolue des paramètres...).
+-   La [**fonction de régularisation**]{.orange} $\Omega$ mesure la
+    complexité du modèle. Elle est strictement croissante avec des
+    mesures de cette complexité (nombre de paramètres, valeur absolue
+    des paramètres...).
 
 . . .
 
-- Fonctions de régularisation classiques:
-  - Aucune régularisation: $\Omega\left(\mathbf{w}\right) = 0$ (fréquent en économétrie!)
-  - La norme L1 (lasso): $\Omega\left(\mathbf{w}\right) = \lambda \sum_{j=1}^d \left|w\right|$
-  - La norme L2 (ridge): $\Omega\left(\mathbf{w}\right) = \lambda \sum_{j=1}^d w^2$
+-   Fonctions de régularisation classiques:
+    -   Aucune régularisation: $\Omega\left(\mathbf{w}\right) = 0$
+        (fréquent en économétrie!)
+    -   La norme L1 (lasso):
+        $\Omega\left(\mathbf{w}\right) = \lambda \sum_{j=1}^d \left|w\right|$
+    -   La norme L2 (ridge):
+        $\Omega\left(\mathbf{w}\right) = \lambda \sum_{j=1}^d w^2$
 
-Les fonctions de régularisation peuvent être spécifiques à un algorithme.
+Les fonctions de régularisation peuvent être spécifiques à un
+algorithme.
 
 ## Entraînement d'un modèle
 
-La procédure statistique qui utilise la [__fonction objectif__]{.orange} pour calculer les [__paramètres__]{.orange} du [__modèle__]{.orange} à partir d'un jeu de données $\left(y_i, \mathbf{x_i} \right)_{i= 1,\dots,n}$ est appelée [__entraînement__]{.orange} du modèle.
+La procédure statistique qui utilise la [**fonction objectif**]{.orange}
+pour calculer les [**paramètres**]{.orange} du [**modèle**]{.orange} à
+partir d'un jeu de données
+$\left(y_i, \mathbf{x_i} \right)_{i= 1,\dots,n}$ est appelée
+[**entraînement**]{.orange} du modèle.
 
 . . .
 
-À partir d'un jeu de données $\left(y_i, \mathbf{x_i} \right)_{i= 1,\dots,n}$, on obtient l'approximation $\hat{F}$ en [minimisant l'espérance conditionnelle]{.orange} de la fonction objectif $Obj$ par rapport aux paramètres $\bf\theta$. $\hat{F}$ est caractérisé par $\hat{\bf\theta}$ tel que:
+À partir d'un jeu de données
+$\left(y_i, \mathbf{x_i} \right)_{i= 1,\dots,n}$, on obtient
+l'approximation $\hat{F}$ en [minimisant l'espérance
+conditionnelle]{.orange} de la fonction objectif $Obj$ par rapport aux
+paramètres $\bf\theta$. $\hat{F}$ est caractérisé par $\hat{\bf\theta}$
+tel que:
 
 $$\hat{\bf\theta} = \argmin_{\bf\theta} \mathbb{E}_{y,\mathbf{x}}\left[ Obj\left(\mathbf{\theta}, y, \mathbf{x} \right)\right]$$
 
@@ -256,9 +325,11 @@ $$\hat{\bf\theta} = \argmin_{\bf\theta} \mathbb{E}_{y,\mathbf{x}}\left[ Obj\left
 
 On modélise une variable continue avec:
 
-- un modèle linéaire: $F\left(\mathbf{x}\right) = \mathbf{x} \mathbf{\beta}$; 
-- une fonction de perte quadratique: $L\left(y, F\left(\mathbf{x}\right)\right) =  \left(y - F\left(\mathbf{x}\right)\right)^2$;
-- pas de fonction de régularisation.
+-   un modèle linéaire:
+    $F\left(\mathbf{x}\right) = \mathbf{x} \mathbf{\beta}$;
+-   une fonction de perte quadratique:
+    $L\left(y, F\left(\mathbf{x}\right)\right) = \left(y - F\left(\mathbf{x}\right)\right)^2$;
+-   pas de fonction de régularisation.
 
 La fonction $\hat{F}$ est caractérisée par $\mathbf{\beta}$ tel que:
 
@@ -266,13 +337,11 @@ $$\hat{\mathbf{\beta}} = \argmin_\mathbf{\beta} \sum_{i} \left(y_i - \mathbf{x_i
 
 . . .
 
-__On retombe sur les OLS!__
+**On retombe sur les OLS!**
 
-## La notion d'_overfitting_
-
+## La notion d'*overfitting*
 
 A écrire
-
 
 ## Données d'entraînement et données de test
 
@@ -280,155 +349,188 @@ A écrire
 
 ## Quelques définitions
 
-::: {.small60}
+::: small60
+|                     Notation                     | Définition                                                                 | Machine learning                       | Économétrie                                        |
+|:---------------:|----------------------|-----------------|-----------------|
+|                       $y$                        | Ce qu'on veut modéliser                                                    | *Target*, *outcome*                    | Variable dépendante                                |
+|                   $\mathbf{x}$                   | Les variables utilisées pour prédire                                       | *Features*                             | Variables indépendantes                            |
+| $\left(y_i, \mathbf{x_i} \right)_{i= 1,\dots,n}$ | Les données dont on dispose                                                | *Instances*                            | Observations                                       |
+|                       $w$                        | Les paramètres du modèle                                                   | *Weights*                              | Paramètres ($\mathbf{\beta}$)                      |
+|                                                  | Procédure de calcul des paramètres du modèle                               | *Training*, entraînement               | Estimation                                         |
+|                                                  | Le fait que le modèle est *trop* performant sur les données d'entraînement | *Overfitting*, surapprentissage        | Pas de terme [(c'est bien le problème!)]{.small50} |
+|                                                  | Données utilisées pour l'entraînement du modèle                            | *Training set*, données d'entraînement |                                                    |
+|                                                  | Données utilisées pour l'évaluation du modèle                              | *Test set*, données de test            |                                                    |
 
-| Notation   | Définition                           | Machine learning | Économétrie            |
-|:--:|------|----|----|
-| $y$        | Ce qu'on veut modéliser              | _Target_, _outcome_| Variable dépendante |
-|$\mathbf{x}$| Les variables utilisées pour prédire | _Features_         | Variables indépendantes| 
-| $\left(y_i, \mathbf{x_i} \right)_{i= 1,\dots,n}$ | Les données dont on dispose | _Instances_ | Observations | 
-| $w$ | Les paramètres du modèle | _Weights_| Paramètres ($\mathbf{\beta}$)|
-|| Procédure de calcul des paramètres du modèle | _Training_, entraînement | Estimation |
-|| Le fait que le modèle est _trop_ performant sur les données d'entraînement| _Overfitting_, surapprentissage| Pas de terme [(c'est bien le problème!)]{.small50}|
-|| Données utilisées pour l'entraînement du modèle | _Training set_, données d'entraînement |  |
-|| Données utilisées pour l'évaluation du modèle | _Test set_, données de test |  |
-
-: {tbl-colwidths="[15,50,35,30]"}
-
+: {tbl-colwidths="\[15,50,35,30\]"}
 :::
 
-
-# Les approches de _boosting_
+# Les approches de *boosting*
 
 ## Estimation d'une fonction inconnue
 
-L'objectif de l'apprentissage supervisé est d'[__approximer une fonction inconnue__]{.orange} $F: \mathbf{x} \mapsto y$ en minimisant l'espérance conditionnelle d'une fonction de perte $L\left(y, F\left(\mathbf{x}\right)\right)$ sur un ensemble d'entraînement $\left(y_i, \mathbf{x_i} \right)_{i= 1,\dots,n}$. Formellement:
+L'objectif de l'apprentissage supervisé est d'[**approximer une fonction
+inconnue**]{.orange} $F: \mathbf{x} \mapsto y$ en minimisant l'espérance
+conditionnelle d'une fonction de perte
+$L\left(y, F\left(\mathbf{x}\right)\right)$ sur un ensemble
+d'entraînement $\left(y_i, \mathbf{x_i} \right)_{i= 1,\dots,n}$.
+Formellement:
 
 $$\hat{F} = \argmin_F \mathbb{E}_{y,\mathbf{x}}\left[ L\left(y, F\left(\mathbf{x}\right)\right)\right] $$
 
 . . .
 
-C'est un problème compliqué car on cherche la fonction $F$ parmi l'ensemble des fonctions possibles!
+C'est un problème compliqué car on cherche la fonction $F$ parmi
+l'ensemble des fonctions possibles!
 
-## Estimation paramétrique
+## Estimation paramétrique {.small90}
 
-::: {.small90}
+::: incremental
+-   Principe: rechercher $F\left(\mathbf{x}\right)$ dans un ensemble de
+    fonctions paramétrisées par un vecteur fini de paramètres $\theta$.
+    <br/> [Exemple: $F\left(\mathbf{x}\right) = \mathbf{x\beta}$ avec
+    $\mathbf{\beta} = \{\beta_1, \dots, \beta_d\}$]{.small90}
 
-:::: {.incremental}
+-   Cette restriction permet de se ramener à un problème d'optimisation
+    sur l'espace des paramètres: $\hat{F}$ est caractérisée par ses
+    paramètres $\hat{\bf\theta}$ tels que <br/>
+    $$\hat{\bf\theta} = \argmin_{\bf\theta} \mathbb{E}_{y,\mathbf{x}}\left[ L\left(y, F\left(\mathbf{x}, \mathbf{\theta}\right)\right)\right]$$
 
-- Principe: rechercher $F\left(\mathbf{x}\right)$ dans un ensemble de fonctions paramétrisées par un vecteur fini de paramètres $\theta$. <br/> [Exemple: $F\left(\mathbf{x}\right) = \mathbf{x\beta}$ avec $\mathbf{\beta} = \{\beta_1, \dots, \beta_d\}$]{.small90}
-
-- Cette restriction permet de se ramener à un problème d'optimisation sur l'espace des paramètres: $\hat{F}$ est caractérisée par ses paramètres $\hat{\bf\theta}$ tels que <br/> $$\hat{\bf\theta} = \argmin_{\bf\theta} \mathbb{E}_{y,\mathbf{x}}\left[ L\left(y, F\left(\mathbf{x}, \mathbf{\theta}\right)\right)\right]$$
-
-- Si on veut obtenir un modèle performant, le nombre de paramètres peut devenir très grand...
-
-::::
-
+-   Si on veut obtenir un modèle performant, le nombre de paramètres
+    peut devenir élevé et l'entraînement du modèle très compliqué...
 :::
 
-## Les approches ensemblistes
+## Les approches ensemblistes {.small90}
 
-::: {.small90}
+::: incremental
+-   Principe: créer un modèle très précis en combinant un grand nombre
+    de modèles simples comprenant un nombre restreint de paramètres
+    (*base learners* ou *weak learners*).
 
-:::: {.incremental}
+-   Les méthodes ensemblistes sont diversifiées:
 
-- Principe: créer un modèle très précis (_strong learner_) en combinant un grand nombre de modèles simples comprenant un nombre restreint de paramètres (_base learners_ ou _weak learners_).
+    -   Nature du *base learner* $\Rightarrow$ des
+        [**arbres**]{.orange} le plus souvent;
+    -   Méthode pour combiner les *base learners* (moyenne, vote
+        majoritaire...);
+    -   Méthode d'entraînement du modèle.
 
-- Les méthodes ensemblistes sont diversifiées:
-  
-  - Nature du _base learner_;
-  - Méthode pour combiner les _base learners_ (moyenne, vote majoritaire...);
-  - Méthode d'entraînement du modèle.
+-   Deux grandes approches ensemblistes:
 
-- Exemple: $$F\left(\mathbf{x}\right) = \frac{1}{M} \sum_{m=1}^M \beta_m f\left(\mathbf{x}, \mathbf{\theta}_m\right)$$
-
-::::
-
+    -   *Bagging* et *random forest* (@breiman1996bagging,
+        @breiman2001random);
+    -   *Boosting* (@shapire1990strength, @freund1997decision).
 :::
 
+## Les arbres de décision et de classification
 
-## Les approches ensemblistes
+-   Présenter les arbres de régression et de classification. Les notions
+    importantes: splits, noeuds terminaux, partition des données,
+    valeurs, prédictions, profondeur, nombre de feuilles.
 
-::: {.small90}
+Parler des arbres: ESM chapitre 9, chapitre 10 formule page 353
 
-:::: {.incremental}
+## *Bagging* et *random forests* {.small90}
 
-- $\hat{F}$ est caractérisée par les paramètres $\{\beta_m, \mathbf{\theta}_m\}_{m=1}^{M}$ tels que [$$\argmin_{\{\beta_m, \mathbf{\theta}_m\}_{m=1}^{M}} \sum_{i=1}^N L\left(y_i, \sum_{m=1}^M \beta_m f\left(\mathbf{x}_i, \mathbf{\theta}_m\right)\right)$$]{.small90}
+-   Principe de ces approches:
+    -   *Bagging* (@breiman1996bagging): chaque *base learner* est
+        entraîné **séparément** sur un échantillon aléatoire
+        d'observations;
+    -   *Random forest* (@breiman2001random): chaque *base learner* est
+        entraîné **séparément** sur un échantillon aléatoire
+        d'observations et de variables;
 
-- Trois grandes approches ensemblistes:
+. . .
 
-  - _Bagging_ (@breiman1996bagging): chaque modèle est entraîné __séparément__ sur un échantillon aléatoire d'observations;
-  - _Random forest_ (@breiman2001random): chaque modèle est entraîné __séparément__ sur un échantillon aléatoire d'observations et de variables;
-  - _Boosting_ (@shapire1990strength, @freund1997decision): les modèles sont entraînés __séquentiellement__, chaque modèle essayant de corriger les modèle erreurs du précédent.
+- Point essentiel: les modèles sont entraînés [__indépendamment__]{.orange} les uns des autres.
 
+. . .
 
-::::
+-   Les prédictions des *base learners* sont combinées pour obtenir la
+    prédiction finale. Exemple:
+    $$F\left(\mathbf{x}\right) = \frac{1}{M} \sum_{m=1}^M \beta_m f\left(\mathbf{x}, \mathbf{\theta}_m\right)$$
 
-:::
-
-<!-- . . . -->
-
-<!-- - L'approche de _boosting_ repose sur un __fondement théorique précis__ (@shapire1990strength). -->
-
-## _Random forests_
+## *Random forests*
 
 ![Random forest](production_figures_files/figure-pdf/rf.png)
 
+## Le *boosting* {.small90}
 
-## Le _boosting_
+Le _boosting_ est une approche ensembliste qui ne traite pas les modèles de base séparément les uns des autres.
 
-::: {.small90}
+. . .
 
-:::: {.incremental}
-
-- Le _boosting_ combine une [__approche ensembliste__]{.orange} avec une [__modélisation additive par étapes__]{.orange} (_forward stagewise additive modeling_).
+Dans une approche de _boosting_, on veut entraîner le modèle suivant:
 
 $$F\left(\mathbf{x}\right) = \sum_{m=1}^M \beta_m f\left(\mathbf{x}, \mathbf{\theta}_m\right)$$
 
+. . .
 
-::::
+$\hat{F}$ est caractérisée par les paramètres $\{\beta_m, \mathbf{\theta}_m\}_{m=1}^{M}$ tels que
+$$\argmin_{\{\beta_m, \mathbf{\theta}_m\}_{m=1}^{M}} \sum_{i=1}^N L\left(y_i, \sum_{m=1}^M \beta_m f\left(\mathbf{x}_i, \mathbf{\theta}_m\right)\right)$$
 
+. . .
+
+C'est un problème très compliqué dès que $M$ est élevé!
+
+## Le *boosting* {.small90}
+
+Le *boosting* combine l'[**approche ensembliste**]{.orange} avec une [**modélisation additive par étapes**]{.orange} (*forward stagewise additive modeling*).
+
+. . .
+
+La modélisation additive par étapes simplifie massivement l'entraînement du modèle:
+
+- L'entraînement commence par entraîner un seul _base learner_;
+- On ajoute ensuite séquentiellement à ce premier modèle d'autres _base learners_, sans modifier les paramètres des modèles déjà entraînés;
+- À chaque itération, l'entraînement essaie de trouver le _base learner_ qui améliore le plus possible le modèle global.
+
+. . .
+
+__On décompose l'entraînement d'un très gros modèle (procédure très complexe) en une série d'entraînements de petits modèles (procédure beaucoup plus simple).__
+
+## Boosting
+
+::: {.callout-note appearance="simple"}
+## Algorithme de modélisation additive par étapes
+
+1.  Commencer par $f_0\left(\mathbf{x}\right) = 0$.
+2.  Pour $m = 1, \dots, M:$
+    (a) Entraîner le $m$-ième modèle:
+    $$\left(\hat{\beta}_m, \hat{\theta}_m\right) = \argmin_{\beta, \mathbf{\theta}} \sum_{i=1}^N L\left(y_i, f_{m-1}\left(\mathbf{x}_i\right) + \beta b\left(\mathbf{x}_i, \mathbf{\theta}\right)\right)$
+    (b) Définir $f_m\left(\mathbf{x}\right) = f_{m-1}\left(\mathbf{x}\right) + \hat{\beta}_m b\left(\mathbf{x}_i, \mathbf{\hat{\theta}_m}\right)$
 :::
 
 ## Boosting
 
 ![Boosting](production_figures_files/figure-pdf/boosting.png)
 
-
-
 ## Résumé
 
-- Une approche ensembliste;<br/> $\Rightarrow$ Beaucoup de petits modèles plutôt qu'un gros modèle.
-- Un modélisation additive par étapes;<br/> $\Rightarrow$ On entraîne les modèles séquentiellement.
-- Utilisation du gradient.
-- Utilisation des arbres de régression comme _base learner_.
+-   Une approche ensembliste;<br/> $\Rightarrow$ Beaucoup de petits
+    modèles plutôt qu'un gros modèle.
+-   Un modélisation additive par étapes;<br/> $\Rightarrow$ On entraîne
+    les modèles séquentiellement.
+-   Utilisation du gradient.
+-   Utilisation des arbres de régression comme *base learner*.
 
-
-## _Gradient boosted regression trees_ (GBRT)
-
-
-
-
+## *Gradient boosted regression trees* (GBRT)
 
 ## Pleins d'équations en vrac
 
 $$\hat{y}_{i} =  \sum_{k=1}^{K} f_k(x_i), f_k \epsilon \mathcal{F}$$
-$\hat{y}_{i} =  \sum_{k=1}^{K} f_k(x_i), f_k \epsilon \mathcal{F}$
+$\hat{y}_{i} = \sum_{k=1}^{K} f_k(x_i), f_k \epsilon \mathcal{F}$
 
-$\displaystyle \hat{y}_{i} =  \sum_{k=1}^{K} f_k(x_i), f_k \epsilon \mathcal{F}$
-
-
+$\displaystyle \hat{y}_{i} = \sum_{k=1}^{K} f_k(x_i), f_k \epsilon \mathcal{F}$
 
 $obj(\theta) = \sum_{i}^{n} l(y_{i}, \hat{y}_{i}) + \sum_{k=1}^K \Omega(f_{k})$
 
-$\hat{y}_i^{(0)} =0\\ \hat{y}_i^{(1)} =  f_1(x_i) = \hat{y}_i^{(0)} + f_1(x_i)\\ \hat{y}_i^{(2)} = f_1(x_i) + f_2(x_i)= \hat{y}_i^{(1)} + f_2(x_i)\\ ....\\ \hat{y}_i^{(t)} = \sum_{k=1}^t f_k(x_i)= \hat{y}_i^{(t-1)} + f_t(x_i)$
-
+$\hat{y}_i^{(0)} =0\\ \hat{y}_i^{(1)} = f_1(x_i) = \hat{y}_i^{(0)} + f_1(x_i)\\ \hat{y}_i^{(2)} = f_1(x_i) + f_2(x_i)= \hat{y}_i^{(1)} + f_2(x_i)\\ ....\\ \hat{y}_i^{(t)} = \sum_{k=1}^t f_k(x_i)= \hat{y}_i^{(t-1)} + f_t(x_i)$
 
 ## Encore des équations
 
 $$\begin{aligned}obj^{(t)}  &= \sum_{i=1}^{n} l(y_i, \hat{y}_{i}^{(t)}) + \sum_{i=1}^t\Omega(f_i) \\           &= \sum_{i=1}^{n} l(y_i, \hat{y}_{i}^{(t-1)} + f_{t}(x_i)) + \Omega(f_t) + constant\end{aligned}$$
 
-$obj^{(t)}  = \sum_{i=1}^n (y_{i} - (\hat{y}_{i}^{(t-1)} + f_t(x_i)))^2 + \sum_{i=1}^t\Omega(f_i) \\           = \sum_{i=1}^n [2(\hat{y}_i^{(t-1)} - y_i)f_t(x_i) + f_t(x_i)^2] + \Omega(f_t) + constant$
+$obj^{(t)} = \sum_{i=1}^n (y_{i} - (\hat{y}_{i}^{(t-1)} + f_t(x_i)))^2 + \sum_{i=1}^t\Omega(f_i) \\ = \sum_{i=1}^n [2(\hat{y}_i^{(t-1)} - y_i)f_t(x_i) + f_t(x_i)^2] + \Omega(f_t) + constant$
 
 $obj^{(t)} = \sum_{i=1}^{n} [l(y_i, \hat{y}_i^{(t-1)}) + g_i f_t(x_i) + \frac{1}{2} h_{i} f_{t}^2(x_i)] + \Omega(f_t) + constant$
 
@@ -437,16 +539,13 @@ $obj^{(t)} = \sum_{i=1}^{n} [l(y_i, \hat{y}_i^{(t-1)}) + g_i f_t(x_i) + \frac{1}
 $$g_i = \frac{\partial l(y_i, \hat{y}_i^{(t-1)})}{\partial\hat{y}_i^{(t-1)}}$$
 $$h_i = \frac{\partial^2 l(y_i, \hat{y}_i^{(t-1)})}{{\partial \hat{y}_i^{(t-1)}}^2}$$
 
- 
 $\sum_{i=1}^n [g_{i} f_{t}(x_i) + \frac{1}{2} h_{i} f_{t}^2(x_i)] + \Omega(f_t)$
 
 $f_t(x) = w_{q(x)}, w \in R^{T}, q:R^d\rightarrow \{1,2,...,T\}$
 
 ## Ya encore des équations
 
-
-$\Omega(f) = \gamma T + \frac{1}{2}\lambda \sum_{j=1}^T w_j^2
-obj^{(t)} \approx \sum_{i=1}^n [g_i w_{q(x_i)} + \frac{1}{2} h_i w_{q(x_i)}^2] + \gamma T + \frac{1}{2}\lambda \sum_{j=1}^T w_j^2\\ = \sum^T_{j=1} [(\sum_{i\in I_j} g_i) w_j + \frac{1}{2} (\sum_{i\in I_j} h_i + \lambda) w_j^2 ] + \gamma T$
+$\Omega(f) = \gamma T + \frac{1}{2}\lambda \sum_{j=1}^T w_j^2 obj^{(t)} \approx \sum_{i=1}^n [g_i w_{q(x_i)} + \frac{1}{2} h_i w_{q(x_i)}^2] + \gamma T + \frac{1}{2}\lambda \sum_{j=1}^T w_j^2\\ = \sum^T_{j=1} [(\sum_{i\in I_j} g_i) w_j + \frac{1}{2} (\sum_{i\in I_j} h_i + \lambda) w_j^2 ] + \gamma T$
 
 $obj^{(t)} = \sum^T_{j=1} [G_jw_j + \frac{1}{2} (H_j+\lambda) w_j^2] +\gamma T$
 
@@ -456,11 +555,7 @@ $w_j^{\ast} = -\frac{G_j}{H_j+\lambda}\\ \text{obj}^{\ast} = -\frac{1}{2} \sum_{
 
 $Gain = \frac{1}{2} \left[\frac{G_L^2}{H_L+\lambda}+\frac{G_R^2}{H_R+\lambda}-\frac{(G_L+G_R)^2}{H_L+H_R+\lambda}\right] - \gamma$
 
-
-
-
 <!-- <iframe width="560" height="315" src="/home/onyxia/work/formation_boosting/slides/production_figures_files/figure-pdf/rf-1.pdf"></iframe> -->
-
 
 <!-- ![Dudu](/home/onyxia/work/formation_boosting/slides/production_figures_files/figure-pdf/rf-1.pdf) -->
 
@@ -474,10 +569,7 @@ $Gain = \frac{1}{2} \left[\frac{G_L^2}{H_L+\lambda}+\frac{G_R^2}{H_R+\lambda}-\f
 
 ## Références
 
-::: {.small80}
-
-:::: {#refs}
-::::
-
+::: small80
+::: {#refs}
 :::
-
+:::
