@@ -459,7 +459,7 @@ Le _boosting_ est une approche ensembliste qui ne traite pas les modèles de bas
 
 . . .
 
-Dans une approche de _boosting_, on veut entraîner le modèle suivant:
+Imaginons qu'on veuille entraîner le modèle suivant:
 
 $$F\left(\mathbf{x}\right) = \sum_{m=1}^M \beta_m f\left(\mathbf{x}, \mathbf{\theta}_m\right)$$
 
@@ -478,17 +478,28 @@ Le *boosting* combine l'[**approche ensembliste**]{.orange} avec une [**modélis
 
 . . .
 
-La modélisation additive par étapes simplifie massivement l'entraînement du modèle:
+Deux intuitions essentielles:
 
-- L'entraînement commence par entraîner un seul _base learner_;
-- On ajoute ensuite séquentiellement à ce premier modèle d'autres _base learners_, sans modifier les paramètres des modèles déjà entraînés;
-- À chaque itération, l'entraînement essaie de trouver le _base learner_ qui améliore le plus possible le modèle global.
+- __La modélisation additive par étapes décompose l'entraînement d'un très gros modèle__ (procédure très complexe) __en une séquence d'entraînements de petits modèles__ (procédure beaucoup plus simple).;
 
 . . .
 
-__On décompose l'entraînement d'un très gros modèle (procédure très complexe) en une série d'entraînements de petits modèles (procédure beaucoup plus simple).__
+- __Chaque _base learner_ essaie d'expliquer les erreurs du modèle issu des étapes précédentes.__
 
-## Boosting
+
+## Modélisation additive par étapes {.small90}
+
+La modélisation additive par étapes simplifie massivement l'entraînement du modèle:
+
+. . .
+
+- On commence par entraîner un seul _base learner_;
+- On ajoute au modèle un deuxième _base learner_ sans modifier les paramètres du premier _base learner_ déjà entraîné;
+- On entraîne ce deuxième _base learner_ de façon à améliorer le plus possible le modèle global (la somme des deux _base learners_).
+- On ajoute un troisième _base learner_ et on l'entraîne...
+- ...
+
+## Modélisation additive par étapes
 
 ::: {.callout-note appearance="simple"}
 ## Algorithme de modélisation additive par étapes
@@ -496,13 +507,43 @@ __On décompose l'entraînement d'un très gros modèle (procédure très comple
 1.  Commencer par $f_0\left(\mathbf{x}\right) = 0$.
 2.  Pour $m = 1, \dots, M:$
     (a) Entraîner le $m$-ième modèle:
-    $$\left(\hat{\beta}_m, \hat{\theta}_m\right) = \argmin_{\beta, \mathbf{\theta}} \sum_{i=1}^N L\left(y_i, f_{m-1}\left(\mathbf{x}_i\right) + \beta b\left(\mathbf{x}_i, \mathbf{\theta}\right)\right)$
+    $$\left(\hat{\beta}_m, \hat{\theta}_m\right) = \argmin_{\beta, \mathbf{\theta}} \sum_{i=1}^N L\left(y_i, f_{m-1}\left(\mathbf{x}_i\right) + \beta b\left(\mathbf{x}_i, \mathbf{\theta}\right)\right)$$
     (b) Définir $f_m\left(\mathbf{x}\right) = f_{m-1}\left(\mathbf{x}\right) + \hat{\beta}_m b\left(\mathbf{x}_i, \mathbf{\hat{\theta}_m}\right)$
 :::
 
+
+## Lien avec la notion de résidu {.small90}
+
+On veut entraîner le modèle $F\left(\mathbf{x}\right) = \sum_{m=1}^M \beta_m f\left(\mathbf{x}, \mathbf{\theta}_m\right)$ avec une fonction de perte quadratique $L\left(y, F\left(\mathbf{x}\right)\right) = \left(y - F\left(\mathbf{x}\right)\right)^2$.
+
+. . .
+
+On sait que $f_{m}\left(\mathbf{x}_i\right) = f_{m-1}\left(\mathbf{x}_i\right) + \beta b\left(\mathbf{x}_i, \mathbf{\gamma}_m\right)$.
+
+. . .
+
+On peut réécrire la fonction de perte:
+
+\begin{align*}
+L\bigl(y_i, f_{m}\left(\mathbf{x}_i\right)\bigr) 
+  &= \bigl(y_i - f_{m}\left(\mathbf{x}_i\right)\bigr)^2 \\
+  &= \biggl(\underbrace{y_i - f_{m-1}\left(\mathbf{x}_i\right)}_{\substack{\text{Résidu de}\\ \text{l'étape } m-1}} - \beta b\left(\mathbf{x}_i, \mathbf{\gamma}_m\right)\biggr)^2 \\
+  &= \biggl(r_{im} - \beta b\left(\mathbf{x}_i, \mathbf{\gamma}_m\right)\biggr)^2
+\end{align*}
+
+$L\left(y_i, f_{m}\left(\mathbf{x}_i\right)\right) = \left(y - F\left(\mathbf{x}\right)\right)^2$
+
+
+$L\left(y_i, f_{m-1}\left(\mathbf{x}_i\right)\right) = \left(y - F\left(\mathbf{x}\right)\right)^2$
+
+$f_m\left(\mathbf{x}\right) = f_{m-1}\left(\mathbf{x}\right) + \hat{\beta}_m b\left(\mathbf{x}_i, \mathbf{\hat{\theta}_m}\right)$
+
+
+
+
 ## Boosting
 
-![Boosting](production_figures_files/figure-pdf/boosting.png)
+![Figure svg sur loosting](production_figures_files/figure-pdf/boosting.png)
 
 ## Résumé
 
