@@ -478,18 +478,18 @@ Le *boosting* combine l'[**approche ensembliste**]{.orange} avec une [**modélis
 
 . . .
 
-Deux intuitions essentielles:
+Deux propriétés essentielles:
 
-- __La modélisation additive par étapes décompose l'entraînement d'un très gros modèle__ (procédure très complexe) __en une séquence d'entraînements de petits modèles__ (procédure beaucoup plus simple).;
+- __La modélisation additive par étapes décompose l'entraînement d'un très gros modèle__ (procédure très complexe) __en une séquence d'entraînements de petits modèles__ (procédure beaucoup plus simple);
 
 . . .
 
-- __Chaque _base learner_ essaie d'expliquer les erreurs du modèle issu des étapes précédentes.__
+- __Chaque _base learner_ essaie de corriger les erreurs du modèle issu des étapes précédentes.__
 
 
 ## Modélisation additive par étapes {.small90}
 
-La modélisation additive par étapes simplifie massivement l'entraînement du modèle:
+[__La modélisation additive par étapes simplifie massivement l'entraînement du modèle__]{.orange}:
 
 . . .
 
@@ -511,48 +511,69 @@ La modélisation additive par étapes simplifie massivement l'entraînement du m
     (b) Définir $f_m\left(\mathbf{x}\right) = f_{m-1}\left(\mathbf{x}\right) + \hat{\beta}_m b\left(\mathbf{x}_i, \mathbf{\hat{\theta}_m}\right)$
 :::
 
+## Correction progressive des erreurs {.small90}
 
-## Lien avec la notion de résidu {.small90}
+[__À chaque étape, le _base learner_ essaie de corriger les erreurs du modèle issu des étapes précédentes.__]{.orange}
 
-On veut entraîner le modèle $F\left(\mathbf{x}\right) = \sum_{m=1}^M \beta_m f\left(\mathbf{x}, \mathbf{\theta}_m\right)$ avec une fonction de perte quadratique $L\left(y, F\left(\mathbf{x}\right)\right) = \left(y - F\left(\mathbf{x}\right)\right)^2$.
+. . .
+
+Il est possible de faire le lien avec la notion de résidu dans un cas particulier.
+
+. . .
+
+Hypothèses: on veut entraîner le modèle $F\left(\mathbf{x}\right) = \sum_{m=1}^M \beta_m f\left(\mathbf{x}, \mathbf{\theta}_m\right)$ avec une fonction de perte quadratique $L\left(y, F\left(\mathbf{x}\right)\right) = \left(y - F\left(\mathbf{x}\right)\right)^2$.
 
 . . .
 
 On sait que $f_{m}\left(\mathbf{x}_i\right) = f_{m-1}\left(\mathbf{x}_i\right) + \beta b\left(\mathbf{x}_i, \mathbf{\gamma}_m\right)$.
 
-. . .
+## Correction progressive des erreurs {.small90}
 
-On peut réécrire la fonction de perte:
+::: {.small80}
 
-\begin{align*}
+::: incremental
+
+- On peut réécrire la fonction de perte utilisée pour entraîner le $m$-ième modèle:\begin{align*}
 L\bigl(y_i, f_{m}\left(\mathbf{x}_i\right)\bigr) 
   &= \bigl(y_i - f_{m}\left(\mathbf{x}_i\right)\bigr)^2 \\
-  &= \biggl(\underbrace{y_i - f_{m-1}\left(\mathbf{x}_i\right)}_{\substack{\text{Résidu de}\\ \text{l'étape } m-1}} - \beta b\left(\mathbf{x}_i, \mathbf{\gamma}_m\right)\biggr)^2 \\
-  &= \biggl(r_{im} - \beta b\left(\mathbf{x}_i, \mathbf{\gamma}_m\right)\biggr)^2
+  &= \biggl(\underbrace{y_i - f_{m-1}\left(\mathbf{x}_i\right)}_{\substack{\text{Résidu à l'issue}\\ \text{de l'étape } m-1}} - \beta b\left(\mathbf{x}_i, \mathbf{\gamma}_m\right)\biggr)^2 \\
+  &= \biggl(\hat{r}_{im} - \beta b\left(\mathbf{x}_i, \mathbf{\gamma}_m\right)\biggr)^2
 \end{align*}
 
-$L\left(y_i, f_{m}\left(\mathbf{x}_i\right)\right) = \left(y - F\left(\mathbf{x}\right)\right)^2$
+- L'entraînement du $m$-ième modèle vise à calculer $\hat{\beta}_m, \hat{\gamma}_m$ tels que $$\hat{\beta}_m, \hat{\gamma}_m = \argmin_{\{\beta_m, \mathbf{\gamma}_m\}} \sum_{i=1}^N \biggl(\hat{r}_{im} - \beta_m b\left(\mathbf{x}_i, \mathbf{\gamma}_m\right)\biggr)^2$$
+
+- [Le $m$-ième modèle essaie de prédire les résidus, c'est-à-dire ce que les $m-1$ arbres précédents n'ont pas réussi à prédire!]{.orange}
+
+:::
+:::
 
 
-$L\left(y_i, f_{m-1}\left(\mathbf{x}_i\right)\right) = \left(y - F\left(\mathbf{x}\right)\right)^2$
-
-$f_m\left(\mathbf{x}\right) = f_{m-1}\left(\mathbf{x}\right) + \hat{\beta}_m b\left(\mathbf{x}_i, \mathbf{\hat{\theta}_m}\right)$
-
-
-
-
-## Boosting
+## Correction progressive des erreurs {.small90}
 
 ![Figure svg sur loosting](production_figures_files/figure-pdf/boosting.png)
 
-## Résumé
+
+
+## Correction progressive des erreurs {.small90}
+
+Trois intuitions à partir de ce cas particulier:
+
+- Chaque arbre n'est pas indépendant des arbres précédents;
+- Chaque arbre est ciblé sur les erreurs laissées par les arbres précédents $\Rightarrow$ cela rend le modèle final performant;
+- Cette focalisation sur les erreurs crée un risque de surapprentissage de l'ensemble d'entraînement.
+
+## Résumé sur le _boosting_
 
 -   Une approche ensembliste;<br/> $\Rightarrow$ Beaucoup de petits
     modèles plutôt qu'un gros modèle.
 -   Un modélisation additive par étapes;<br/> $\Rightarrow$ On entraîne
     les modèles séquentiellement.
--   Utilisation du gradient.
+-   
 -   Utilisation des arbres de régression comme *base learner*.
+
+# Le _gradient boosting_
+
+
 
 ## *Gradient boosted regression trees* (GBRT)
 
