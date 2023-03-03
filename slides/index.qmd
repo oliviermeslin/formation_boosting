@@ -364,7 +364,7 @@ A écrire
 : {tbl-colwidths="\[15,50,35,30\]"}
 :::
 
-# Les approches de *boosting*
+# Qu'est-ce que le *boosting*?
 
 ## Estimation d'une fonction inconnue
 
@@ -571,7 +571,8 @@ Trois intuitions à partir de ce cas particulier:
 -   
 -   Utilisation des arbres de régression comme *base learner*.
 
-# Le _gradient boosting_
+# Qu'est-ce que le _gradient boosting_?
+
 
 
 
