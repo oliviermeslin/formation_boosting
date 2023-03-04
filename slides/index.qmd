@@ -586,23 +586,44 @@ Trois intuitions à partir de ce cas particulier:
 
 ## *Gradient boosted regression trees* (GBRT)
 
-## Pleins d'équations en vrac
-
 Je reprends exactement les notations de l'article principal qui décrit XGBoost.
 
-$$ \hat{y}_{i} = \phi\left(\mathbf{x}_i\right) = \sum_{k=1}^{K} f_k\left(\mathbf{x}_i\right), f_k \epsilon \mathcal{F}$$
+## Le modèle qu'on veut entraîner {.small90}
 
-$\mathcal{F} = \{f(\mathbf{x}) = w_{q(\mathbf{x})}\}(q:\mathbb{R}^m \rightarrow T,w \in \mathbb{R}^T)$
+::: {.small80}
+:::: {.incremental}
+
+- On veut entraîner un [modèle]{.orange} comprenant $K$ arbres de régression: $$\hat{y}_{i} = \phi\left(\mathbf{x}_i\right) = \sum_{k=1}^{K} f_k\left(\mathbf{x}_i\right), f_k \epsilon \mathcal{F}$$
+
+- Chaque arbre est défini par trois [paramètres]{.orange}: sa structure (fonction $q: \mathbb{R}^m \rightarrow T$), son nombre de feuilles terminales $T$ et ses poids $\mathbf{w}\in \mathbb{R}^T$.
+
+- On entraîne le modèle avec une [fonction-objectif]{.orange} constituée d'une [fonction de perte]{.orange} dérivable et convexe $l$ et d'une [fonction de régularisation]{.orange} $\Omega$.$$\mathcal{L}(\phi) = \underbrace{\sum_i l(\hat{y}_{i}, y_{i})}_{\substack{\text{Perte sur les} \\ \text{observations}}} + \underbrace{\sum_k \Omega(f_{k})}_{\substack{\text{Fonction de} \\ \text{régularisation}}}\hspace{5mm}\text{avec}\hspace{5mm}\Omega(f) = \gamma T + \frac{1}{2} \lambda ||w||^2$$
+
+- Notation: $\hat{y}_i^{(t)}$ désigne la prédiction à lissue de l'étape $t$: $\hat{y}_i^{(t)} = \sum_{k=1}^t f_k(\mathbf{x}_i)$.
+
+<!-- $\mathcal{F} = \{f(\mathbf{x}) = w_{q(\mathbf{x})}\}(q:\mathbb{R}^m \rightarrow T,w \in \mathbb{R}^T)$ -->
+
+<!-- $\hat{y}_i^{(0)} = 0\\ \hat{y}_i^{(1)} = f_1(x_i) = \hat{y}_i^{(0)} + f_1(x_i)\\ \hat{y}_i^{(2)} = f_1(x_i) + f_2(x_i)= \hat{y}_i^{(1)} + f_2(x_i)\\ ....\\ \hat{y}_i^{(t)} = \sum_{k=1}^t f_k(x_i)= \hat{y}_i^{(t-1)} + f_t(x_i)$ -->
+
+::::
+:::
+
+## Encore des équations {.small90}
+
+On écrit la fonction de perte au moment de l'entraînement du $t$ième arbre:
+
+$$\begin{aligned}\mathcal{L}^{(t)} 
+&= \sum_{i=1}^{n} l(y_i, \hat{y}_{i}^{(t)}) + \sum_{k=1}^t\Omega(f_k) \\
+&= \sum_{i=1}^{n} l(y_i, \hat{y}_{i}^{(t-1)} + f_{t}(\mathbf{x}_i)) + \Omega(f_t) + constant
+\end{aligned}$$
+
+. . .
+
+On fait un développement limité d'ordre 2 de $l(y_i, \hat{y}_{i}^{(t-1)} + f_{t}(\mathbf{x}_i))$ au voisinage de $f_{t}(\mathbf{x}_i)$:
+
+$$\mathcal{L}^{(t)} \approx \sum_{i=1}^{n} [l(y_i, \hat{y}_{i}^{(t-1)}) + g_i f_t(\mathbf{x}_i)+ \frac{1}{2} h_i f^2_t(\mathbf{x}_i)] + \Omega(f_t)$$
 
 
-
-$L(\phi) = \sum_{i}^{n} l(y_{i}, \hat{y}_{i}) + \sum_{k=1}^K \Omega(f_{k})$
-
-$\hat{y}_i^{(0)} =0\\ \hat{y}_i^{(1)} = f_1(x_i) = \hat{y}_i^{(0)} + f_1(x_i)\\ \hat{y}_i^{(2)} = f_1(x_i) + f_2(x_i)= \hat{y}_i^{(1)} + f_2(x_i)\\ ....\\ \hat{y}_i^{(t)} = \sum_{k=1}^t f_k(x_i)= \hat{y}_i^{(t-1)} + f_t(x_i)$
-
-## Encore des équations
-
-$$\begin{aligned}obj^{(t)}  &= \sum_{i=1}^{n} l(y_i, \hat{y}_{i}^{(t)}) + \sum_{i=1}^t\Omega(f_i) \\           &= \sum_{i=1}^{n} l(y_i, \hat{y}_{i}^{(t-1)} + f_{t}(x_i)) + \Omega(f_t) + constant\end{aligned}$$
 
 $obj^{(t)} = \sum_{i=1}^n (y_{i} - (\hat{y}_{i}^{(t-1)} + f_t(x_i)))^2 + \sum_{i=1}^t\Omega(f_i) \\ = \sum_{i=1}^n [2(\hat{y}_i^{(t-1)} - y_i)f_t(x_i) + f_t(x_i)^2] + \Omega(f_t) + constant$
 
