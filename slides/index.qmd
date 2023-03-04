@@ -125,6 +125,15 @@ list.files(path = "/home/onyxia/work/formation_boosting/slides/production_figure
 -   Comment lightGBM choisit le poids de chaque feuille terminale:
     https://stackoverflow.com/questions/60137453/how-does-lightgbm-or-other-boosted-trees-implementations-with-2nd-order-approxi
 
+## Objectifs de la formation
+
+- Trois contributions théoriques à comprendre:
+    - Qu'est-ce qu'une approche de _boosting_?
+    - Qu'est-ce que le _gradient boosting_?
+    - Comment construit-on les arbres de régression?
+- ASPECTS PRATIQUES A COMPLETER.
+
+
 ## Plan
 
 -   Présenter les arbres de régression et de classification. Les notions
@@ -579,12 +588,15 @@ Trois intuitions à partir de ce cas particulier:
 
 ## Pleins d'équations en vrac
 
-$$ \hat{y}_{i} = \hat{F}\left(\mathbf{x}_i\right) = \sum_{k=1}^{K} f_k\left(\mathbf{x}_i\right), f_k \epsilon \mathcal{F}$$
-$\hat{y}_{i} = \sum_{k=1}^{K} f_k(x_i), f_k \epsilon \mathcal{F}$
+Je reprends exactement les notations de l'article principal qui décrit XGBoost.
 
-$\displaystyle \hat{y}_{i} = \sum_{k=1}^{K} f_k(x_i), f_k \epsilon \mathcal{F}$
+$$ \hat{y}_{i} = \phi\left(\mathbf{x}_i\right) = \sum_{k=1}^{K} f_k\left(\mathbf{x}_i\right), f_k \epsilon \mathcal{F}$$
 
-$obj(\theta) = \sum_{i}^{n} l(y_{i}, \hat{y}_{i}) + \sum_{k=1}^K \Omega(f_{k})$
+$\mathcal{F} = \{f(\mathbf{x}) = w_{q(\mathbf{x})}\}(q:\mathbb{R}^m \rightarrow T,w \in \mathbb{R}^T)$
+
+
+
+$L(\phi) = \sum_{i}^{n} l(y_{i}, \hat{y}_{i}) + \sum_{k=1}^K \Omega(f_{k})$
 
 $\hat{y}_i^{(0)} =0\\ \hat{y}_i^{(1)} = f_1(x_i) = \hat{y}_i^{(0)} + f_1(x_i)\\ \hat{y}_i^{(2)} = f_1(x_i) + f_2(x_i)= \hat{y}_i^{(1)} + f_2(x_i)\\ ....\\ \hat{y}_i^{(t)} = \sum_{k=1}^t f_k(x_i)= \hat{y}_i^{(t-1)} + f_t(x_i)$
 
