@@ -196,6 +196,13 @@ list.files(path = "/home/onyxia/work/formation_boosting/slides/production_figure
     produisant des logiciels [**fiables**]{.orange},
     [**évolutifs**]{.orange} et [**maintenables**]{.orange}
 
+
+## L'avenir c'est maintenant
+
+
+![](Tweet_Bojan_Tunguz.png)
+
+
 # Généralités sur l'apprentissage supervisé
 
 ## Introduction
@@ -584,9 +591,19 @@ Trois intuitions à partir de ce cas particulier:
 
 
 
-## *Gradient boosted regression trees* (GBRT)
+## *Gradient boosted regression trees* (GBRT) {.small90}
 
 Je reprends exactement les notations de l'article principal qui décrit XGBoost.
+
+. . .
+
+Quatre étapes:
+
+- Présentation du modèle qu'on veut entraîner;
+- Reformulation du modèle pour faire apparaître les gradients;
+- Calcul des poids optimaux et de la qualité d'un arbre, à structure d'arbre donnée;
+- Définition d'une méthode et de critère permettant de choisir la structure d'un arbre.
+
 
 ## Le modèle qu'on veut entraîner {.small90}
 
@@ -613,7 +630,7 @@ Je reprends exactement les notations de l'article principal qui décrit XGBoost.
 ::: {.small80}
 :::: {.incremental}
 
-- On écrit la fonction de perte au moment de l'entraînement du $t$-ième arbre: $$\begin{aligned}\mathcal{L}^{(t)} 
+- On écrit la fonction-objectif au moment de l'entraînement du $t$-ième arbre: $$\begin{aligned}\mathcal{L}^{(t)} 
 &= \sum_{i=1}^{n} l(y_i, \hat{y}_{i}^{(t)}) + \sum_{k=1}^t\Omega(f_k) \\
 &= \sum_{i=1}^{n} l\left(y_i, \hat{y}_{i}^{(t-1)} + f_{t}(\mathbf{x}_i)\right) + \Omega(f_t) + constant
 \end{aligned}$$
@@ -644,11 +661,28 @@ $$\begin{alignat*}{4}
 :::
 ::::
 
-## Calculer les poids $w_j$ {.small90}
+## Calculer les poids optimaux $w_j$ {.small90}
 
-$$w_j^{\ast} = -\frac{G_j}{H_j+\lambda}$$
-$$\text{obj}^{\ast} = -\frac{1}{2} \sum_{j=1}^T \frac{G_j^2}{H_j+\lambda} + \gamma T$$
+::: {.small80}
+:::: {.incremental}
 
+- Pour une structure d'arbre donnée ($q: \mathbb{R}^m \rightarrow \{1, \dots, T\}$), on peut facilement calculer les poids optimaux et la valeur optimale de la fonction-objectif:
+$$w_j^{\ast} = -\frac{\sum_{i\in I_j} g_i}{\sum_{i\in I_j} h_i+\lambda}$$
+$$\mathcal{\tilde{L}}^{(t)}(q) = -\frac{1}{2} \sum_{j=1}^T \frac{\left(\sum_{i\in I_j} g_i\right)^2}{\sum_{i\in I_j} h_i+\lambda} + \gamma T$$
+
+- On peut utiliser cette dernière formule pour évaluer le gain (réduction de la fonction-objectif) induit par un _split_ marginal:
+$$Gain = \frac{1}{2} \left[\frac{\left(\sum_{i\in I_L} g_i\right)^2}{\sum_{i\in I_L} h_i+\lambda}+\frac{\left(\sum_{i\in I_R} g_i\right)^2}{\sum_{i\in I_R} h_i+\lambda}-\frac{\left(\sum_{i\in I} g_i\right)^2}{\sum_{i\in I} h_i+\lambda}\right] - \gamma$$
+
+- Cette formule est essentielle: elle permet de comparer les _splits_ possibles lorsqu'on construit l'arbre.
+
+:::
+::::
+
+## Comment
+
+
+
+## Encore des équations
 
 
 $obj^{(t)} = \sum_{i=1}^n (y_{i} - (\hat{y}_{i}^{(t-1)} + f_t(x_i)))^2 + \sum_{i=1}^t\Omega(f_i) \\ = \sum_{i=1}^n [2(\hat{y}_i^{(t-1)} - y_i)f_t(x_i) + f_t(x_i)^2] + \Omega(f_t) + constant$
