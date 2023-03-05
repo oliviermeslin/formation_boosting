@@ -625,7 +625,7 @@ Je reprends exactement les notations de l'article principal qui décrit XGBoost.
 ::::
 :::
 
-## Encore des équations {.small90}
+## Faire apparaître les poids $w_j$ {.small90}
 
 ::: {.small80}
 :::: {.incremental}
@@ -633,27 +633,21 @@ Je reprends exactement les notations de l'article principal qui décrit XGBoost.
 - On peut simplifier $\mathcal{\tilde{L}}^{(t)}$ en enlevant les termes $l(y_i, \hat{y}_{i}^{(t-1)})$ car ils sont constants et en remplaçant $\Omega(f)$ par sa définition: 
 $$\mathcal{\tilde{L}}^{(t)} = \sum_{i=1}^{n} [g_i f_t(\mathbf{x}_i)+ \frac{1}{2} h_i f^2_t(\mathbf{x}_i)] + \gamma T + \frac{1}{2} \lambda \sum_{j=1}^T w_i^2$$
 
-- On définit $I_j = \{ i | q(\mathbf{x}_i) = j \}$ l'ensemble des observations situées sur la feuille terminale $j$ et on réorganise l'expression de $\mathcal{\tilde{L}}^{(t)}$ pour faire apparaître les poids $w_i$:
-$$\begin{aligned}
+- On définit $I_j = \{ i | q(\mathbf{x}_i) = j \}$ l'ensemble des observations situées sur la feuille $j$ et on réorganise $\mathcal{\tilde{L}}^{(t)}$ pour faire apparaître les poids $w_i$ du $t$-ième arbre:
+$$\begin{alignat*}{4}
 \mathcal{\tilde{L}}^{(t)}
-&= \sum_{j=1}^{T} \sum_{i\in I_j} [g_i f_t(\mathbf{x}_i) &+ \frac{1}{2} h_i f^2_t(\mathbf{x}_i)] &+ \gamma T + \frac{1}{2} \lambda \sum_{j=1}^T w_i^2 \\
-&= \sum_{i=1}^{n} l(y_i, \hat{y}_{i}^{(t-1)} &+ f_{t}(\mathbf{x}_i)) &+ \Omega(f_t) + constant
-\end{aligned}$$
-
-
-$$\begin{aligned}
-\mathcal{\tilde{L}}^{(t)}
-  &= \sum_{j=1}^{T} \sum_{i\in I_j} [g_i f_t(\mathbf{x}_i) &+ \frac{1}{2} h_i f^2_t(\mathbf{x}_i)] &+ \gamma T + \frac{1}{2} \lambda \sum_{j=1}^T w_i^2 \\
-  &= \sum_{j=1}^{T} \sum_{i\in I_j} [g_i w_i &+ \frac{1}{2} h_i w_i^2] + \gamma T &+ \frac{1}{2} \lambda \sum_{j=1}^T w_i^2 \\
-  &= \sum^T_{j=1} [(\sum_{i\in I_j} g_i) w_j &+ \frac{1}{2} (\sum_{i\in I_j} h_i + \lambda) w_j^2 ] &+ \gamma T
-\end{aligned}$$
-$$
+  &= \sum_{j=1}^{T} \sum_{i\in I_j} \Bigl[g_i f_t(\mathbf{x}_i) &&+ \frac{1}{2} h_i f^2_t(\mathbf{x}_i)\Bigr] &&+ \gamma T + \frac{1}{2} \lambda \sum_{j=1}^T w_i^2 \\
+  &= \sum_{j=1}^{T} \sum_{i\in I_j} \Bigl[g_i w_j &&+ \frac{1}{2} h_i w_j^2\Bigl] &&+ \gamma T + \frac{1}{2} \lambda \sum_{j=1}^T w_i^2 \\
+  &= \sum^T_{j=1} \Bigl[w_j(\sum_{i\in I_j} g_i) &&+ \frac{1}{2} w_j^2 (\sum_{i\in I_j} h_i + \lambda) \Bigr] &&+ \gamma T
+\end{alignat*}$$
 
 :::
 ::::
 
-## Toujours des équations
+## Calculer les poids $w_j$ {.small90}
 
+$$w_j^{\ast} = -\frac{G_j}{H_j+\lambda}$$
+$$\text{obj}^{\ast} = -\frac{1}{2} \sum_{j=1}^T \frac{G_j^2}{H_j+\lambda} + \gamma T$$
 
 
 
