@@ -601,8 +601,8 @@ Quatre étapes:
 
 - Présentation du modèle qu'on veut entraîner;
 - Reformulation du modèle pour faire apparaître les gradients;
-- Calcul des poids optimaux et de la qualité d'un arbre, à structure d'arbre donnée;
-- Définition d'une méthode et de critère permettant de choisir la structure d'un arbre.
+- Calcul des poids optimaux et de la qualité d'un arbre dont la structure est donnée;
+- Définition d'une méthode et de critères permettant de construire un arbre.
 
 
 ## Le modèle qu'on veut entraîner {.small90}
@@ -670,15 +670,33 @@ $$\begin{alignat*}{4}
 $$w_j^{\ast} = -\frac{\sum_{i\in I_j} g_i}{\sum_{i\in I_j} h_i+\lambda}$$
 $$\mathcal{\tilde{L}}^{(t)}(q) = -\frac{1}{2} \sum_{j=1}^T \frac{\left(\sum_{i\in I_j} g_i\right)^2}{\sum_{i\in I_j} h_i+\lambda} + \gamma T$$
 
-- On peut utiliser cette dernière formule pour évaluer le gain (réduction de la fonction-objectif) induit par un _split_ marginal:
-$$Gain = \frac{1}{2} \left[\frac{\left(\sum_{i\in I_L} g_i\right)^2}{\sum_{i\in I_L} h_i+\lambda}+\frac{\left(\sum_{i\in I_R} g_i\right)^2}{\sum_{i\in I_R} h_i+\lambda}-\frac{\left(\sum_{i\in I} g_i\right)^2}{\sum_{i\in I} h_i+\lambda}\right] - \gamma$$
+:::
+::::
 
-- Cette formule est essentielle: elle permet de comparer les _splits_ possibles lorsqu'on construit l'arbre.
+## Évaluer la qualité d'un arbre et d'un _split_ {.small90}
+
+[Ces deux formules sont essentielles pour la construction des arbres]{.blue2}:
+
+::: {.small80}
+:::: {.incremental}
+
+- On peut utiliser la formule donnant la valeur optimale de la fonction-objectif pour comparer la qualité de deux arbres.
+
+- On également peut utiliser cette formule pour évaluer le gain (réduction de la fonction-objectif) induit par un _split_ marginal.
+
+- Imaginons qu'on décompose la feuille $I$ en deux nouvelles feuilles $I_L$ et $I_R$ (avec $I = I_L \cup I_R$). Le gain potentiel par ce _split_ est:
+$$\mathcal{L}_{\text{split}} = \frac{1}{2} \left[\frac{\left(\sum_{i\in I_L} g_i\right)^2}{\sum_{i\in I_L} h_i+\lambda}+\frac{\left(\sum_{i\in I_R} g_i\right)^2}{\sum_{i\in I_R} h_i+\lambda}-\frac{\left(\sum_{i\in I} g_i\right)^2}{\sum_{i\in I} h_i+\lambda}\right] - \gamma$$
+
+- Cette dernière formule est essentielle: elle permet de comparer les _splits_ possibles lorsqu'on construit un arbre.
 
 :::
 ::::
 
-## Comment
+## Comment construire un arbre
+
+- Bien dire qu'on est en approche _greedy_ (glouton/morfal/bourrin).
+- Décrire les différentes façons de rechercher les _splits_.
+- Parler à la fin du _pruning_.
 
 
 
