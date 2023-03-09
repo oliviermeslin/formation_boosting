@@ -119,6 +119,9 @@ list.files(path = "/home/onyxia/work/formation_boosting/slides/production_figure
 
 <!-- https://neptune.ai/blog/lightgbm-parameters-guide -->
 
+<!-- https://bangdasun.github.io/2019/03/21/38-practical-comparison-xgboost-lightgbm/ -->
+
+
 ## Des éléments sur `lightGBM`
 
 -   une présentation intéressante du GB: https://jmarkhou.com/lgbqr/
