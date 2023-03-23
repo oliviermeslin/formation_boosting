@@ -61,9 +61,9 @@ temp[, un := NULL]
 temp[, valeur := (1 - (x/50)/2 + (x/50)**5 + (y/50)**3) * exp(-(x/50)**2 - (y/50)**2)
 ][, valeur := (valeur) * 2 / (max(valeur) - min(valeur))
 ][, valeur := valeur - (max(valeur) + min(valeur)) / 2
-][, valeur2 := valeur + 0.1 * rnorm(.N)
-][valeur2 >  1, valeur2 :=  1
-][valeur2 < -1, valeur2 := -1
+][, valeur := valeur + 0.05 * rnorm(.N)
+][valeur >  1, valeur :=  1
+][valeur < -1, valeur := -1
 ]
 
 # Graphique de la valeur observée
@@ -79,9 +79,9 @@ p_observe <- ggplot(temp) +
 
 ggsave(
   plot = p_observe,
-  "p_observe.png", 
+  "Production_figures/p_observe.png", 
   dpi = 100,
-  width  = 300,
+  width  = 140,
   height = 140,
   units  = "mm"
 )
@@ -142,9 +142,9 @@ p_arbre1 <- ggplot(temp2) +
 
 ggsave(
   plot = p_arbre1,
-  "p_arbre1.png", 
+  "Production_figures/p_arbre1.png", 
   dpi = 100,
-  width  = 300,
+  width  = 140,
   height = 140,
   units  = "mm"
 )
@@ -188,7 +188,7 @@ arbre1 %>% render_graph()
 
 arbre1 %>% 
   export_graph(
-    file_name = "diag_arbre1.svg", 
+    file_name = "Production_figures/diag_arbre1.svg", 
     file_type = "svg",
     # title = "First tree of the model",
   )
@@ -267,7 +267,7 @@ plot_grid(
   )
 
 ggsave(
-  "p_debut.png", 
+  "Production_figures/p_debut.png", 
   dpi = 100,
   width  = 300,
   height = 140,
@@ -335,7 +335,7 @@ p_debut <- plot_grid(
   )
 
 ggsave(
-  "p_complet.png", 
+  "Production_figures/p_complet.png", 
   dpi = 100,
   width  = 300,
   height = 140,
@@ -405,7 +405,7 @@ p_debut <- plot_grid(
   )
 
 ggsave(
-  "p_complet2.png", 
+  "Production_figures/p_complet2.png", 
   dpi = 100,
   width  = 300,
   height = 140,
@@ -420,7 +420,7 @@ p_pred_arbres1_100 <- temp2 %>%
 
 ggsave(
   plot = p_pred_arbres1_100,
-  "p_final100.png", 
+  "Production_figures/p_final100.png", 
   dpi = 100,
   width  = 300,
   height = 140,
