@@ -44,6 +44,10 @@ Avantages/inconvénients
 gamma, beta, alpha, lambda, eta, M, T, nb de quantiles;
 method = "hist"
 
+## Diagnostics post-entraînement
+
+Mesure d'importance: intérêt et limites.
+
 # Cas d'usage
 
 - Données (pouvant être rendues) publiques
