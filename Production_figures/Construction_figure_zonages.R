@@ -43,6 +43,26 @@ produire_graphique <- function(
     labs(title = title, x = NULL, y = NULL)
 }
 
+coss <- function(a){
+  a=cos(a*pi/180)
+  return(a)
+}
+sinn <- function(a){
+  a= sin(a*pi/180)
+  return(a)
+}
+tann <- function(a){
+  a= tan(a*pi/180)
+  return(a)
+}
+rotation_origine <- function(x, y, angle) {
+  xx <-  x * coss(angle) + y * sinn(angle)
+  yy <- -x * sinn(angle) + y * coss(angle)
+  
+   return(list(xx, yy))
+}
+
+
 
 #############################################
 # Générer des données
@@ -57,14 +77,21 @@ temp <- data.table(x = -dimension_x:dimension_x, un = 1) %>%
     by = "un",
     allow.cartesian = TRUE
   )
+
+for (angle in seq(10, 80, 1)) {
+  temp[, c(paste0("x", as.character(angle)), paste0("y", as.character(angle))) := rotation_origine(x, y, -angle)]
+  
+}
+
 temp[, un := NULL]
-temp[, valeur := (1 - (x/50)/2 + (x/50)**5 + (y/50)**3) * exp(-(x/50)**2 - (y/50)**2)
+temp[, valeur := (1 - (x30/50)/2 + (x30/50)**5 + (y30/50)**3) * exp(-(x30/50)**2 - (y30/50)**2)
 ][, valeur := (valeur) * 2 / (max(valeur) - min(valeur))
 ][, valeur := valeur - (max(valeur) + min(valeur)) / 2
 ][, valeur := valeur + 0.05 * rnorm(.N)
 ][valeur >  1, valeur :=  1
 ][valeur < -1, valeur := -1
 ]
+
 
 # Graphique de la valeur observée
 p_observe <- ggplot(temp) + 
@@ -91,7 +118,8 @@ ggsave(
 # Entraîner un modèle de GBRT
 #############################################
 
-dtrain <- xgb.DMatrix(data = temp[, .(x, y)] %>% as.data.frame() %>% as.matrix(), label = temp$valeur)
+dtrain  <- xgb.DMatrix(data = temp[, .(x, y)] %>% as.data.frame() %>% as.matrix(), label = temp$valeur)
+dtrain2 <- xgb.DMatrix(data = temp[, .SD, .SDcols = patterns("x|y")] %>% as.data.frame() %>% as.matrix(), label = temp$valeur)
 
 modele_xgb <- xgboost(
   data = dtrain, 
@@ -103,27 +131,58 @@ modele_xgb <- xgboost(
   objective = "reg:squarederror"
 )
 
+modele_xgb2 <- xgboost(
+  data = dtrain2, 
+  # label = temp$valeur, 
+  max.depth = 3, 
+  eta     = 1,
+  nthread = 2, 
+  nrounds = 100, 
+  objective = "reg:squarederror"
+)
 #############################################
 # Construire la table d'exploitation
 #############################################
 
 temp2 <- copy(temp)
 temp2[, valeur_predite := predict(modele_xgb, dtrain)]
+temp2[, valeur_predite_rot := predict(modele_xgb2, dtrain2)]
 for (i in 2:101) {
-  temp2[, c(paste0("valeur_predite_arbres1_", i-1)) := predict(modele_xgb, dtrain, iterationrange = c(1, i))]
+  temp2[, c(paste0("valeur_predite_arbres1_", i-1))         := predict(modele_xgb,  dtrain,  iterationrange = c(1, i))]
+  temp2[, c(paste0("valeur_predite_arbres1_", i-1, "_rot")) := predict(modele_xgb2, dtrain2, iterationrange = c(1, i))]
 }
 for (i in 2:101) {
-  temp2[, c(paste0("valeur_predite_arbre", i-1)) := predict(modele_xgb, dtrain, iterationrange = c(i-1, i))]
+  temp2[, c(paste0("valeur_predite_arbre", i-1))        := predict(modele_xgb,  dtrain,  iterationrange = c(i-1, i))]
+  temp2[, c(paste0("valeur_predite_arbre", i-1, "rot")) := predict(modele_xgb2, dtrain2, iterationrange = c(i-1, i))]
 }
 
 temp2 <- temp2[, `:=`(
   valeur_predite_arbres1_25   = predict(modele_xgb, dtrain, iterationrange = c( 1, 26)),
+  valeur_predite_arbres1_25_rot   = predict(modele_xgb2, dtrain2, iterationrange = c( 1, 26)),
   valeur_predite_arbres26_50  = predict(modele_xgb, dtrain, iterationrange = c(26, 51)),
   valeur_predite_arbres51_75  = predict(modele_xgb, dtrain, iterationrange = c(51, 76)),
   valeur_predite_arbres11_20 = predict(modele_xgb, dtrain, iterationrange = c(11, 21)),
   valeur_predite_arbres21_30 = predict(modele_xgb, dtrain, iterationrange = c(21, 31)),
   valeur_predite_arbres31_40 = predict(modele_xgb, dtrain, iterationrange = c(31, 41))
 )]
+
+ggplot(temp2) + 
+  geom_point(aes(x = x, y = y, color = valeur_predite)) +
+  scale_x_continuous(expand = c(0,0)) +
+  scale_y_continuous(expand = c(0,0)) +
+  scale_color_viridis_c(
+    "Predicted value",
+    limits = c(-1, 1)
+  )
+
+ggplot(temp2) + 
+  geom_point(aes(x = x, y = y, color = valeur_predite_rot)) +
+  scale_x_continuous(expand = c(0,0)) +
+  scale_y_continuous(expand = c(0,0)) +
+  scale_color_viridis_c(
+    "Predicted value",
+    limits = c(-1, 1)
+  )
 
 #############################################
 # Produire le graphique et le diagramme du premier arbre
